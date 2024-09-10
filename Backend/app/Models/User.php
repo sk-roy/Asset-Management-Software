@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Asset;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -43,5 +44,11 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+    
+
+    public function assets()
+    {
+        return $this->hasMany(Asset::class);
     }
 }
