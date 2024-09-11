@@ -2,20 +2,22 @@
 
 namespace App\Models;
 
-use App\Model\Asset;
+use App\Models\Category;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Document extends Model
+class Field extends Model
 {
     use HasFactory;
 
+
     protected $fillable = [
-        'document_name', 'path', 'mime_type', 'size',
+        'name', 'title', 'type'
     ];
 
-    public function asset()
+    public function categories()
     {
-        return $this->belongsTo(Asset::class);
+        return $this->belongsToMany(Category::class, 'category_field');
     }
+
 }

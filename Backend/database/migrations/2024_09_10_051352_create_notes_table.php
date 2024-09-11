@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('notes', function (Blueprint $table) {
             $table->id();
+            $table->string('title')->unique()->nullable();
+            $table->text('description')->nullable();    
+
+            $table->foreignId('asset_id')->nullable()->constrained()->onDelete('cascade');
+            
             $table->timestamps();
         });
     }

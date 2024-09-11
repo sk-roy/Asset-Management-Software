@@ -15,10 +15,16 @@ class CategorySeeder extends Seeder
      */
     public function run(): void
     {
-        Category::create(['name' => 'Land/Flat', 'title' => 'Land or Flat']);
-        Category::create(['name' => 'Electronic Device', 'title' => 'Electronic Device']);
-        Category::create(['name' => 'Furniture', 'title' => 'Furniture']);
-        Category::create(['name' => 'Vehicle', 'title' => 'Vehicle']);
-        Category::create(['name' => 'Jewelry', 'title' => 'Jewelry']);
+        Category::create(['name' => 'Land/Flat', 'title' => 'Land or Flat', 'type' => 'Asset']);
+        Category::create(['name' => 'Electronic Device', 'title' => 'Electronic Device', 'type' => 'Asset']);
+        Category::create(['name' => 'Furniture', 'title' => 'Furniture','type' => 'Asset']);
+        Category::create(['name' => 'Vehicle', 'title' => 'Vehicle', 'type' => 'Asset']);
+        Category::create(['name' => 'Jewelry', 'title' => 'Jewelry', 'type' => 'Asset']);
+        
+        Category::create(['name' => 'Service', 'title' => 'Service', 'type' => 'Event']);
+        Category::create(['name' => 'Clean', 'title' => 'Clean', 'type' => 'Event']);
+        Category::create(['name' => 'Replace', 'title' => 'Replace', 'type' => 'Event']);
+        Category::create(['name' => 'Visit', 'title' => 'Visit', 'type' => 'Event']);
+        Category::create(['name' => 'Bill Payment', 'title' => 'Bill Payment', 'type' => 'Event']);
     }
 }

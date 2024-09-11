@@ -39,4 +39,26 @@ class Asset extends Model
         return $this->belongsTo(User::class);
     }
     
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+    
+
+    public function events()
+    {
+        return $this->hasMany(Event::class);
+    }
+
+    public function notes()
+    {
+        return $this->hasMany(Note::class);
+    }
+
+    public function documents()
+    {
+        return $this->hasMany(Document::class);
+    }
+    
 }

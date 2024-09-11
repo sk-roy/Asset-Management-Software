@@ -11,15 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('documents', function (Blueprint $table) {
+        Schema::create('fields', function (Blueprint $table) {
             $table->id();
-            $table->string('document_name')->unique();
-            $table->string('path');
-            $table->string('mime_type');
-            $table->integer('size');
-            
-            $table->foreignId('asset_id')->constrained()->onDelete('cascade');
-
+            $table->string('name');
+            $table->string('title')->nullable();
+            $table->string('type')->nullable();
             $table->timestamps();
         });
     }
@@ -29,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('documents');
+        Schema::dropIfExists('fields');
     }
 };

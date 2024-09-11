@@ -30,7 +30,8 @@ return new class extends Migration
             $table->string('plate_number')->nullable();
             $table->float('weight')->nullable();
 
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignId('category_id')->nullable()->constrained('categories')->onDelete('cascade');
 
             $table->timestamps();
         });

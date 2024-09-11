@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Field;
 use App\Models\Asset;
+use App\Models\Event;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,7 +15,9 @@ class Category extends Model
     protected $table = 'categories';
 
     protected $fillable = [
-        'name', 'title',
+        'name', 
+        'title', 
+        'type',
     ];
 
     public function assets()
@@ -22,9 +25,14 @@ class Category extends Model
         return $this->belongsToMany(Asset::class);
     }
 
+    public function events()
+    {
+        return $this->belongsToMany(Event::class);
+    }
+
     public function fields()
     {
-        return $this->belongsToMany(Field::class);
+        return $this->hasMany(Field::class, 'category_field');
     }
 
 }

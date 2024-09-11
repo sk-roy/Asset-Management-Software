@@ -13,6 +13,16 @@ return new class extends Migration
     {
         Schema::create('events', function (Blueprint $table) {
             $table->id();
+            $table->string('title')->unique()->nullable();
+            $table->dateTime('datetime')->nullable();
+            $table->text('description')->nullable();
+            $table->float('charge')->nullable();
+            $table->boolean('active_mode')->default(false);
+            $table->string('map_location')->nullable();            
+
+            $table->foreignId('asset_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignId('category_id')->nullable()->constrained('categories')->onDelete('cascade');
+
             $table->timestamps();
         });
     }
