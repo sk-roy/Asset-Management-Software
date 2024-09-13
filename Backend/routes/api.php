@@ -9,7 +9,8 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 
-Route::post('register', [AuthController::class, 'register']);
-Route::post('login', [AuthController::class, 'login']);
-Route::post('forgot-password', [AuthController::class, 'forgotPassword']);
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
+Route::get('/reset-password', [AuthController::class, 'resetPassword']);
 Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.reset');

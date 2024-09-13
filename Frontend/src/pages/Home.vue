@@ -1,7 +1,7 @@
 <template>
-  <div>Hello Users!</div>
+    <div>Home page</div>
 </template>
 
 <script setup>
-  //
+//
 </script>
