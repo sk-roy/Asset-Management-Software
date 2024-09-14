@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\V1\AssetController;
 use App\Http\Controllers\API\V1\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -14,3 +15,9 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
 Route::get('/reset-password', [AuthController::class, 'resetPassword']);
 Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.reset');
+
+
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/assets', [AssetController::class, 'index']);
+});

@@ -73,6 +73,7 @@
 
 <script>
 import apiClient from '../../plugins/axios.js'
+import Cookies from 'js-cookie';
 
 export default {
 
@@ -92,16 +93,11 @@ export default {
           password: this.password
         })
 
-        console.log(response);
-
-        // Store the token in a cookie
         const token = response.data.token;
-        document.cookie = `auth_token=${token}; path=/; max-age=${
-          24 * 60 * 60
-        }`; // 1 day
+        Cookies.set('auth_token', token, { expires: 1, path: '/' }); // 1 day expiry
 
         // Redirect to the profile page
-        this.$router.push("/");
+        this.$router.push('home');
       } catch (error) {
         console.error("Login failed", error);
         alert("Login failed. Please check your credentials.");
