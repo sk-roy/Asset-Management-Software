@@ -97,7 +97,7 @@ export default {
         Cookies.set('auth_token', token, { expires: 1, path: '/' }); // 1 day expiry
 
         // Redirect to the profile page
-        this.$router.push('home');
+        this.$router.push({ name: 'home' });
       } catch (error) {
         console.error("Login failed", error);
         alert("Login failed. Please check your credentials.");

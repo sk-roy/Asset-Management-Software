@@ -19,5 +19,7 @@ Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('
 
 
 Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout']);
+    
     Route::get('/assets', [AssetController::class, 'index']);
 });

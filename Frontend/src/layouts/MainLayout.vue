@@ -46,12 +46,14 @@
                 </v-btn>
             </template>
             <v-list>
-                <v-list-item
-                v-for="(item, index) in items"
-                :key="index"
-                :value="index"
-                >
-                <v-list-item-title>{{ item.title }}</v-list-item-title>
+                <v-list-item @click='profile' >
+                  <v-list-item-title> Profile </v-list-item-title>
+                </v-list-item>
+                <v-list-item @click='settings' >
+                  <v-list-item-title> Settings </v-list-item-title>
+                </v-list-item>
+                <v-list-item @click='logout' >
+                  <v-list-item-title> Logout </v-list-item-title>
                 </v-list-item>
             </v-list>
         </v-menu>
@@ -107,20 +109,43 @@
 
 <script>
     import pkg from '../../package.json';
+    import apiClient from '../plugins/axios.js'
+    import Cookies from 'js-cookie';
 
     export default {
-        data: () => ({
-            items: [
-                { title: 'Profile' },
-                { title: 'Settings' },
-                { title: 'Logout' },
-            ],
+          
+      data() {
+        return {
             user: {
                 initials: 'JD',
                 fullName: 'John Doe',
                 email: 'john.doe@doe.com',
             },
             title: pkg.title || 'Asset Management System'
-        }),
+        };
+      },     
+
+      methods: {
+        profile() {
+          console.log('profile');
+        },
+
+        settings() {
+          console.log('settings');
+        },
+
+        async logout() {
+          try {
+            const response = await apiClient.post('/logout')
+            console.log('Logout successful:', response.data)
+
+            Cookies.remove('auth_token', { path: '/' })
+            
+            this.$router.push('login');
+          } catch (error) {
+            console.error("Login failed", error);
+          }
+        },
+      },
     }
 </script>
