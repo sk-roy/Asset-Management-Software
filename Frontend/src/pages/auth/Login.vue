@@ -72,7 +72,7 @@
 
 
 <script>
-import apiClient from '../../plugins/axios.js'
+import store from '@/store/index.js';
 import Cookies from 'js-cookie';
 
 export default {
@@ -88,7 +88,7 @@ export default {
   methods: {
     async login() {
       try {
-        const response = await apiClient.post('/login', {
+        const response = await store.dispatch('login', {
           email: this.email,
           password: this.password
         })
@@ -105,11 +105,11 @@ export default {
     },
 
     gotToForgotPassword() {
-      this.$router.push('/auth/forgot-password')
+      this.$router.push('/forgot-password')
     },
 
     goToRegister() {
-      this.$router.push('/auth/register')
+      this.$router.push('/register')
     },
   },
 }

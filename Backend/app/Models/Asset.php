@@ -16,6 +16,7 @@ class Asset extends Model
 
     protected $fillable = [
         'title',
+        'description',
         'address',
         'flat_number',
         'floor_number',

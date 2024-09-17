@@ -59,7 +59,7 @@
         </v-menu>
       </v-app-bar>
   
-      <v-navigation-drawer>
+      <v-navigation-drawer  >
         <v-list>
           <v-list-item title="Drawer left"></v-list-item>
           <v-list-item title="Drawer left"></v-list-item>
@@ -108,8 +108,8 @@
 </template>
 
 <script>
+    import store from '@/store';
     import pkg from '../../package.json';
-    import apiClient from '../plugins/axios.js'
     import Cookies from 'js-cookie';
 
     export default {
@@ -136,14 +136,15 @@
 
         async logout() {
           try {
-            const response = await apiClient.post('/logout')
+            const response = await store.dispatch('logout');
+
             console.log('Logout successful:', response.data)
 
             Cookies.remove('auth_token', { path: '/' })
             
             this.$router.push('login');
           } catch (error) {
-            console.error("Login failed", error);
+            console.error("Logout failed", error);
           }
         },
       },
