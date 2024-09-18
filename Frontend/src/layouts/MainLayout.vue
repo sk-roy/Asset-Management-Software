@@ -82,23 +82,11 @@
       </v-navigation-drawer>
   
       <v-navigation-drawer location="right">
-        <v-list>
-          <v-list-item title="Drawer right"></v-list-item>
-          <v-list-item title="Drawer right"></v-list-item>
-          <v-list-item title="Drawer right"></v-list-item>
-          <v-list-item title="Drawer right"></v-list-item>
-          <v-list-item title="Drawer right"></v-list-item>
-          <v-list-item title="Drawer right"></v-list-item>
-          <v-list-item title="Drawer right"></v-list-item>
-          <v-list-item title="Drawer right"></v-list-item>
-          <v-list-item title="Drawer right"></v-list-item>
-          <v-list-item title="Drawer right"></v-list-item>
-          <v-list-item title="Drawer right"></v-list-item>
-          <v-list-item title="Drawer right"></v-list-item>
-          <v-list-item title="Drawer right"></v-list-item>
-          <v-list-item title="Drawer right"></v-list-item>
-          <v-list-item title="Drawer right"></v-list-item>
-        </v-list>
+        <v-col>
+          <v-row v-for="asset in events" :key="asset.id">
+            <EventCard :event="asset"/>
+          </v-row>
+        </v-col>
       </v-navigation-drawer>
   
       <v-main class="d-flex align-center justify-center" style="min-height: 300px;">
@@ -111,6 +99,7 @@
     import store from '@/store';
     import pkg from '../../package.json';
     import Cookies from 'js-cookie';
+    import EventCard from '@/components/cards/EventCard.vue';
 
     export default {
           
@@ -121,9 +110,18 @@
                 fullName: 'John Doe',
                 email: 'john.doe@doe.com',
             },
-            title: pkg.title || 'Asset Management System'
+            title: pkg.title || 'Asset Management System',
+            events: [],
         };
-      },     
+      },   
+      
+      mounted() {
+        this.fetchEvents()
+      },
+
+      components() {
+        EventCard
+      },
 
       methods: {
         profile() {
@@ -145,6 +143,17 @@
             this.$router.push('login');
           } catch (error) {
             console.error("Logout failed", error);
+          }
+        },
+
+        async fetchEvents() {
+          try {
+            await store.dispatch('fetchEvents');
+            this.events = store.getters.getEvents;
+            console.log('mainlayout fetchEvents', store.getters.getEvents);
+            console.log('mainlayout fetchEvents', this.events);
+          } catch (error) {
+            console.error("Fetching events failed", error);
           }
         },
       },

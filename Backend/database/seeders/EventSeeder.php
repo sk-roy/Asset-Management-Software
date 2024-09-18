@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Asset;
 use App\Models\Event;
 use App\Models\Category;
+use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -15,6 +16,7 @@ class EventSeeder extends Seeder
      */
     public function run(): void
     {
+        $user = User::find(1);
         $asset = Asset::find(1);
         $category = Category::where('name', 'Service')->first();
 
@@ -27,6 +29,7 @@ class EventSeeder extends Seeder
             'map_location' => '1234 Business Street, Suite 500, Metropolis, NY',
         ]);
 
+        $event->user()->associate($user);
         $event->asset()->associate($asset);
         $event->category()->associate($category);
 

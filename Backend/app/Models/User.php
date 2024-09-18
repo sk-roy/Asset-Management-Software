@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Asset;
+use App\Models\User;
 use Laravel\Sanctum\HasAPITokens;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -51,5 +52,11 @@ class User extends Authenticatable
     public function assets()
     {
         return $this->hasMany(Asset::class);
+    }
+    
+
+    public function events()
+    {
+        return $this->hasMany(Event::class);
     }
 }

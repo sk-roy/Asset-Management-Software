@@ -20,6 +20,7 @@ return new class extends Migration
             $table->boolean('active_mode')->default(false);
             $table->string('map_location')->nullable();            
 
+            $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('asset_id')->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('category_id')->nullable()->constrained('categories')->onDelete('cascade');
 

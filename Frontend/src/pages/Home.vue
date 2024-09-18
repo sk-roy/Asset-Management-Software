@@ -20,7 +20,7 @@
                         v-model="selected"
                         :headers="headers"
                         :items="assets"
-                        item-value="name"
+                        item-value="id"
                         show-select
                     ></v-data-table>
                 </div>
@@ -45,16 +45,15 @@ import Asset from '@/components/cards/Asset.vue';
     data () {
       return {
         selected: [],
-        assets: [],
         headers: [
             { title: 'Title', align: 'start', sortable: false, key: 'title' },
             { title: 'Address', align: 'end', sortable: false, key: 'address' },
-            { title: 'Brand', align: 'end', sortable: false, key: 'brand' },
-            { title: 'Model', align: 'end', sortable: false, key: 'model' },
+            { title: 'Brand', align: 'end', sortable: true, key: 'brand' },
+            { title: 'Model', align: 'end', sortable: true, key: 'model' },
             { title: 'Purchasing Price', align: 'end', sortable: true, key: 'purchase_price' },
             { title: 'Purchasing Date', align: 'end', sortable: true, key: 'purchase_date' },
-            { title: 'Purchasing Date', align: 'end', sortable: true, key: 'purchase_date' },
         ],
+        assets: [],
       }
     },
 
@@ -68,7 +67,6 @@ import Asset from '@/components/cards/Asset.vue';
 
     methods: {
         async fetchAssets() {
-            console.log(this.$vuetify.breakpoint);
             await store.dispatch('fetchAssets');
             this.assets = store.getters.getAssets;
         }

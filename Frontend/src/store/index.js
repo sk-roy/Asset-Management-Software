@@ -7,6 +7,7 @@ const store = createStore({
     token: null,
     isAuthenticated: false,
     assets: [],
+    events: [],
   },
   mutations: {
     SET_USER(state, user) {
@@ -18,6 +19,9 @@ const store = createStore({
     },
     SET_ASSETS(state, assets) {
         state.assets = assets;
+    },
+    SET_EVENTS(state, events) {
+        state.events = events;
     }
   },
   actions: {
@@ -42,10 +46,16 @@ const store = createStore({
 
     async fetchAssets({ commit }) {
         const response = await apiClient.get('/assets')
-        console.log(response);
         const assets = response.data.assets
         console.log(assets);
         commit('SET_ASSETS', assets)    
+    },
+
+    async fetchEvents({ commit }) {
+        const response = await apiClient.get('/events')
+        const events = response.data.events
+        console.log('store fetch events', events);
+        commit('SET_EVENTS', events)    
     }
   },
   getters: {
@@ -61,6 +71,9 @@ const store = createStore({
     },
     getAssets(state) {
       return state.assets;
+    },
+    getEvents(state) {
+      return state.events;
     }
   },
   modules: {
