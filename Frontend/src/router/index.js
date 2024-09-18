@@ -6,8 +6,11 @@ import Login from '@/pages/auth/Login.vue';
 import Register from '@/pages/auth/Register.vue';
 import Home from '@/pages/Home.vue';
 import ForgotPassword from '@/pages/auth/Forgot-Password.vue';
-import MainLayout from '@/layouts/MainLayout.vue';
+import FullLayout from '@/layouts/full/FullLayout.vue';
 import About from '@/pages/About.vue';
+import Category from '@/pages/Category.vue';
+import Assets from '@/pages/Assets.vue';
+import Events from '@/pages/Events.vue';
 
 
 const routes = [
@@ -37,20 +40,36 @@ const routes = [
   },
   {
     path: '/',
-    component: MainLayout,
+    redirect: "/home",
+    component: FullLayout,
     meta: {
       requiresAuth: true
     },
     children: [
       {
-        path: '',
+        path: '/home',
         name: 'home',
         component: Home,
       },
       {
-        path: 'about',
+        path: '/about',
         name: 'about',
         component: About,
+      },
+      {
+        path: '/category',
+        name: 'category',
+        component: Category,
+      },
+      {
+        path: '/assets',
+        name: 'assets',
+        component: Assets,
+      },
+      {
+        path: '/events',
+        name: 'events',
+        component: Events,
       },
     ],
   },

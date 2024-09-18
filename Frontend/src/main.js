@@ -13,6 +13,7 @@ import App from './App.vue'
 // Composables
 import { createApp } from 'vue'
 import store from './store'
+import "@/scss/style.scss";
 
 const app = createApp(App)
 
