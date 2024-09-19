@@ -1,6 +1,6 @@
 <template>
   <v-card
-    class="mx-4 mt-4 mx-auto"
+    class="mx-4 mt-4 mx-auto pa-4"
     max-width="280"
     hover
   >

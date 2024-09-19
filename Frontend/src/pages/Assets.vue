@@ -1,45 +1,44 @@
 <template>
-  <div class="mt-4 mr-4">
-      <v-row class="mb-4" justify="end">
-          <v-col cols="auto">
-          <v-btn variant="outlined">
-              Add new Asset
-          </v-btn>
-          </v-col>
-          <v-col cols="auto">
-          <v-btn variant="outlined">
-              See All
-          </v-btn>
-          </v-col>
-      </v-row>
+    <div>
+    <v-card flat class="w-100 h-100 mb-4">
+        <v-card-text>
+            <div class="d-flex align-center">
+                <div>
+                    <h2 class="title text-h6 font-weight-medium"> Assets </h2>
+                </div>
+                <v-spacer></v-spacer>
+                <div>
+                    <v-btn variant="outlined" color="secondary">
+                        Add new Asset
+                    </v-btn>
+                </div>
+            </div>
 
-      <v-row class="hidden-sm-and-down">
-          <v-col>
-              <div style="max-height: 400px; overflow-x: auto;">
-                  <v-data-table
-                      v-model="selected"
-                      :headers="headers"
-                      :items="assets"
-                      item-value="id"
-                      show-select
-                  ></v-data-table>
-              </div>
-          </v-col>
-      </v-row>
+            <v-data-table
+                class="mt-4 hidden-sm-and-down"
+                v-model="selected"
+                :headers="headers"
+                :items="assets"
+                item-value="id"
+                show-select
+            ></v-data-table>
 
-    <v-row class="hidden-md-and-up">
-    <v-col cols="12" v-for="asset in assets" :key="asset.id">
-      <Asset :asset="asset"/>
-    </v-col>
-  </v-row>
-  </div>
+        </v-card-text>
+    </v-card>
+
   
+    <v-row class="hidden-md-and-up">
+        <v-col cols="12" v-for="asset in assets" :key="asset.id">
+            <AssetCard :asset="asset"/>
+        </v-col>
+    </v-row>
+    </div>
 </template>
 
 
 <script>
 import store from '@/store';
-import Asset from '@/components/cards/Asset.vue';
+import AssetCard from '@/components/cards/AssetCard.vue';
 
 export default {
   data () {
@@ -58,7 +57,7 @@ export default {
   },
 
   components: {
-      Asset
+    AssetCard
   },
   
   mounted() {

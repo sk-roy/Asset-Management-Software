@@ -1,7 +1,7 @@
 <template>
   <v-card
-    class="mx-4 mt-4 mx-auto"
-    max-width="220"
+    class="mx-4 mt-4 mx-auto pa-4"
+    max-width="280"
     hover
   >
     <v-card-item>
@@ -31,7 +31,7 @@ import { format } from 'date-fns';
 
 export default {
   props: {
-    event: [],
+    event: {},
   },
 
   methods: {
