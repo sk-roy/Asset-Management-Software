@@ -1,16 +1,20 @@
 <script>
 import CategoryCard from "@/components/cards/CategoryCard.vue";
 import store from "@/store";
+import CreateCategoryDrawer from "@/components/cards/drawer/CreateCategoryDrawer.vue";
 
 export default {
     data() {
         return {
           categories: [],
+          openDrawer: false,
+          customWidth: 500, 
         }
     },
 
     components() {
-      CategoryCard
+      CategoryCard,
+      CreateCategoryDrawer
     },
       
     mounted() {
@@ -26,9 +30,23 @@ export default {
           console.error("Fetching categories failed", error);
         }
       },
+
+      clickCreateCategory() {
+        console.log('clicked clickCreateCategory')
+        this.openDrawer = true;
+      }
     }
 }
 </script>
+
+
+<style scoped>
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+</style>
 
 <template>
   <div>
@@ -40,7 +58,7 @@ export default {
           </div>
           <v-spacer></v-spacer>
           <div>
-              <v-btn variant="outlined" color="secondary">
+              <v-btn variant="outlined" color="secondary" @click="clickCreateCategory">
                   Add new Category
               </v-btn>
           </div>
@@ -81,6 +99,8 @@ export default {
         </v-table>
       </v-card-text>
     </v-card>
+    
+    <CreateCategoryDrawer :isOpen="openDrawer" @update:isOpen="openDrawer = $event" />
     
     <v-col class="hidden-md-and-up">
       <v-row cols="12" v-for="category in categories" :key="category.id">
