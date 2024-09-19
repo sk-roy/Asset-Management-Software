@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('assets', function (Blueprint $table) {
             $table->id();
-            $table->string('title')->unique()->nullable();
+            $table->string('title')->nullable();
             $table->text('description')->nullable();
             $table->string('address')->nullable();
             $table->string('flat_number')->nullable();
