@@ -8,6 +8,7 @@ const store = createStore({
     isAuthenticated: false,
     assets: [],
     events: [],
+    categories: [],
   },
   mutations: {
     SET_USER(state, user) {
@@ -22,6 +23,9 @@ const store = createStore({
     },
     SET_EVENTS(state, events) {
         state.events = events;
+    },
+    SET_CATEGORIES(state, categories) {
+        state.categories = categories;
     }
   },
   actions: {
@@ -47,15 +51,19 @@ const store = createStore({
     async fetchAssets({ commit }) {
         const response = await apiClient.get('/assets')
         const assets = response.data.assets
-        console.log(assets);
         commit('SET_ASSETS', assets)    
     },
 
     async fetchEvents({ commit }) {
         const response = await apiClient.get('/events')
         const events = response.data.events
-        console.log('store fetch events', events);
         commit('SET_EVENTS', events)    
+    },
+
+    async fetchCategories({ commit }) {
+        const response = await apiClient.get('/categories')
+        const categories = response.data.categories
+        commit('SET_CATEGORIES', categories)    
     }
   },
   getters: {
@@ -74,6 +82,9 @@ const store = createStore({
     },
     getEvents(state) {
       return state.events;
+    },
+    getCategories(state) {
+      return state.categories;
     }
   },
   modules: {

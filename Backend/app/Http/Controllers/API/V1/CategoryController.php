@@ -23,7 +23,7 @@ class CategoryController extends Controller
             $categories = $this->categoryService->getCategories();
 
             return response()->json([
-                'Categories'=> $categories,
+                'categories'=> $categories,
                 'message'=> 'Categories loaded succesfully',
             ], 200);
         } catch (\Exception $e) {

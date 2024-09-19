@@ -1,17 +1,5 @@
 <template>
     <div class="mt-4 mr-4">
-        <v-row class="mb-4" justify="end">
-            <v-col cols="auto">
-            <v-btn variant="outlined">
-                Add new Asset
-            </v-btn>
-            </v-col>
-            <v-col cols="auto">
-            <v-btn variant="outlined">
-                See All
-            </v-btn>
-            </v-col>
-        </v-row>
   
         <v-row class="hidden-sm-and-down">
             <v-col>
