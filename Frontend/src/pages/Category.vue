@@ -1,7 +1,7 @@
 <script>
 import CategoryCard from "@/components/cards/CategoryCard.vue";
 import store from "@/store";
-import CreateCategoryDrawer from "@/components/cards/drawer/CreateCategoryDrawer.vue";
+import CreateCategoryDrawer from "@/components/drawer/CreateCategoryDrawer.vue";
 
 export default {
     data() {
@@ -24,7 +24,7 @@ export default {
     methods: {  
       async fetchCategories() {
         try {
-          await store.dispatch('fetchCategories');
+          await store.dispatch('fetchCategories', { type: "" });
           this.categories = store.getters.getCategories;
         } catch (error) {
           console.error("Fetching categories failed", error);
@@ -32,7 +32,6 @@ export default {
       },
 
       clickCreateCategory() {
-        console.log('clicked clickCreateCategory')
         this.openDrawer = true;
       }
     }

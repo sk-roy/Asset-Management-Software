@@ -30,6 +30,7 @@ class CategoryService
             throw new \Exception('Category creating failed.');
         }
     }
+
     public function delete($id)
     {
         try {
@@ -45,11 +46,13 @@ class CategoryService
         }
     }
 
-
-    public function getCategories() 
-    {        
+    public function getCategories($type) 
+    {
         try {
-            $categories = Category::all();
+            if ($type == "")
+                $categories = Category::all();
+            else
+                $categories = Category::where('type', $type)->get();
             return $categories;
         } catch (\Exception $e) {
             Log::error('Loading all categories failed:', ['error' => $e->getMessage()]);

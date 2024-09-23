@@ -17,10 +17,10 @@ class CategoryController extends Controller
         $this->categoryService = $categoryService;
     }
 
-    public function index()
+    public function index(Request $request)
     {
         try {
-            $categories = $this->categoryService->getCategories();
+            $categories = $this->categoryService->getCategories($request->query('type'));
 
             return response()->json([
                 'categories'=> $categories,

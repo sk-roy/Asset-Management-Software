@@ -112,7 +112,7 @@ export default {
     },
 
     goToLogin() {
-      this.$router.push('/auth/login')
+      this.$router.push('/login')
     },
   },
 }

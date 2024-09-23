@@ -8,7 +8,7 @@
                 </div>
                 <v-spacer></v-spacer>
                 <div>
-                    <v-btn variant="outlined" color="secondary">
+                    <v-btn variant="outlined" color="secondary" @click="clickCreateAsset">
                         Add new Asset
                     </v-btn>
                 </div>
@@ -25,6 +25,8 @@
 
         </v-card-text>
     </v-card>
+    
+    <CreateAssetDrawer :isOpen="openDrawer" @update:isOpen="openDrawer = $event" />
 
   
     <v-row class="hidden-md-and-up">
@@ -39,6 +41,7 @@
 <script>
 import store from '@/store';
 import AssetCard from '@/components/cards/AssetCard.vue';
+import CreateAssetDrawer from '@/components/drawer/CreateAssetDrawer.vue';
 
 export default {
   data () {
@@ -53,11 +56,13 @@ export default {
           { title: 'Purchasing Date', align: 'end', sortable: true, key: 'purchase_date' },
       ],
       assets: [],
+      openDrawer: false,
     }
   },
 
   components: {
-    AssetCard
+    AssetCard,
+    CreateAssetDrawer,
   },
   
   mounted() {
@@ -68,7 +73,11 @@ export default {
       async fetchAssets() {
           await store.dispatch('fetchAssets');
           this.assets = store.getters.getAssets;
-      }
+      },
+
+        clickCreateAsset() {
+            this.openDrawer = true;
+        }
   }
 }
 </script>

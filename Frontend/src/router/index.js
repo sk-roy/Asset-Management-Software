@@ -4,9 +4,9 @@ import Cookies from 'js-cookie';
 
 import Login from '@/pages/auth/Login.vue';
 import Register from '@/pages/auth/Register.vue';
-import Home from '@/pages/Home.vue';
+import Dashboard from '@/pages/Dashboard.vue';
 import ForgotPassword from '@/pages/auth/Forgot-Password.vue';
-import FullLayout from '@/layouts/full/FullLayout.vue';
+import Layout from '@/layouts/full/Layout.vue';
 import Category from '@/pages/Category.vue';
 import Assets from '@/pages/Assets.vue';
 import Events from '@/pages/Events.vue';
@@ -39,16 +39,16 @@ const routes = [
   },
   {
     path: '/',
-    redirect: "/home",
-    component: FullLayout,
+    redirect: "/dashboard",
+    component: Layout,
     meta: {
       requiresAuth: true
     },
     children: [
       {
-        path: '/home',
-        name: 'home',
-        component: Home,
+        path: '/dashboard',
+        name: 'dashboard',
+        component: Dashboard,
       },
       {
         path: '/category',
@@ -81,29 +81,11 @@ router.beforeEach((to, from, next) => {
   if (to.meta.requiresAuth && !isLoggedIn) {
     next({ name: 'login' });
   } else if (!to.meta.requiresAuth && isLoggedIn) {
-    next({ name: 'home' });
+    next({ name: 'dashboard' });
   } else {
     next();
   }
 });
 
-
-router.onError((err, to) => {
-  if (err?.message?.includes?.('Failed to fetch dynamically imported module')) {
-    if (!localStorage.getItem('vuetify:dynamic-reload')) {
-      console.log('Reloading page to fix dynamic import error')
-      localStorage.setItem('vuetify:dynamic-reload', 'true')
-      location.assign(to.fullPath)
-    } else {
-      console.error('Dynamic import error, reloading page did not fix it', err)
-    }
-  } else {
-    console.error(err)
-  }
-})
-
-router.isReady().then(() => {
-  localStorage.removeItem('vuetify:dynamic-reload')
-})
 
 export default router

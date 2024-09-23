@@ -8,7 +8,7 @@ const store = createStore({
     isAuthenticated: false,
     assets: [],
     events: [],
-    categories: [],
+    categories: {},
   },
   mutations: {
     SET_USER(state, user) {
@@ -24,8 +24,8 @@ const store = createStore({
     SET_EVENTS(state, events) {
         state.events = events;
     },
-    SET_CATEGORIES(state, categories) {
-        state.categories = categories;
+    SET_CATEGORIES(state, { type, categories }) {
+        state.categories[type] = categories;
     }
   },
   actions: {
@@ -60,10 +60,10 @@ const store = createStore({
         commit('SET_EVENTS', events)    
     },
 
-    async fetchCategories({ commit }) {
-        const response = await apiClient.get('/categories')
+    async fetchCategories({ commit }, { type }) {
+        const response = await apiClient.get('/categories', { params: { type: type } })
         const categories = response.data.categories
-        commit('SET_CATEGORIES', categories)    
+        commit('SET_CATEGORIES', {type, categories})    
     }
   },
   getters: {
@@ -83,8 +83,8 @@ const store = createStore({
     getEvents(state) {
       return state.events;
     },
-    getCategories(state) {
-      return state.categories;
+    getCategories: (state)  => (type) => {
+      return state.categories[type] || [];
     }
   },
   modules: {

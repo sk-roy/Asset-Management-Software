@@ -1,8 +1,8 @@
 export default [
   {
-    title: "Home",
+    title: "Dashboard",
     icon: "mdi mdi-home-analytics",
-    to: "/home",
+    to: "/dashboard",
   },
   {
     title: "Assets",
