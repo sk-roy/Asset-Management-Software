@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API\V1;
 use App\Http\Controllers\Controller;
 use App\Services\API\V1\AssetService;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
 
 class AssetController extends Controller
@@ -16,26 +17,50 @@ class AssetController extends Controller
         $this->assetService = $assetService;
     }
 
-    public function index(Request $request)
+    public function index(Request $request): JsonResponse
     {
+
+        Log::info('Assets loading started.', ['request' => request()->all(), 'user' => auth()->user()]);
+        $response = [
+            'success' => false,
+            'data' => [],
+            'message' => ''
+        ];
         try {
             $userId = auth()->id();
             $sortKey = $request->input('sort_key', 'created_at');
             $sortOrder = $request->input('sort_order', 'asc');
 
-            $assets = $this->assetService->loadSortedAssetsForUser($userId, $sortKey, $sortOrder);
+            $data = $this->assetService->loadSortedAssetsForUser($userId, $sortKey, $sortOrder);
 
-            return response()->json([
-                'assets'=> $assets,
-                'message'=> 'Assets loaded succesfully',
-            ], 200);
+            if ($data->isNotEmpty()) {
+                $response['success'] = true;
+                $response['data'] = $data;
+                $response['message'] = 'Assets loaded successfully.';
+            } else {
+                $response['message'] = 'No data found.';
+            }
         } catch (\Exception $e) {
+            $response['success'] = false;
+            $response['message'] = 'Assets loadeding failed.';
+            
             Log::error('Assets loading failed:', ['error' => $e->getMessage()]);
-            return response()->json(['message' => 'Assets loading failed'], 500);
         }
+
+        Log::info($response['message'], ['response' => $response, 'user' => auth()->user()]);
+        return response()->json($response);
     }
+
+
     public function store(Request $request) 
     {
+
+        Log::info('Assets creating started.', ['request' => request()->all(), 'user' => auth()->user()]);
+        $response = [
+            'success' => false,
+            'data' => [],
+            'message' => ''
+        ];
         try {
             $request->validate([
                 'title' => 'required|string',
@@ -69,12 +94,18 @@ class AssetController extends Controller
                 auth()->id(),
                 $request->input('category_id')
             );
-    
-            return response()->json(['message' => 'Asset created successfully.'], 200);
+            
+            $response['success'] = true;
+            $response['message'] = 'Assets created successfully.';
         } catch (\Exception $e) {
-            Log::error('Asset creating failed:', ['error' => $e->getMessage()]);
-            return response()->json(['message' => 'Asset creation failed'], 500);
+            $response['success'] = false;
+            $response['message'] = 'Assets creation failed.';
+
+            Log::error('Asset creation failed:', ['error' => $e->getMessage()]);
         }
+
+        Log::info($response['message'], ['response' => $response, 'user' => auth()->user()]);
+        return response()->json($response);
     }
     
     

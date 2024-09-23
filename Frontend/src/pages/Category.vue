@@ -24,8 +24,8 @@ export default {
     methods: {  
       async fetchCategories() {
         try {
-          await store.dispatch('fetchCategories', { type: "" });
-          this.categories = store.getters.getCategories;
+          await store.dispatch('fetchCategories', { type: 'all' });
+          this.categories = store.getters.getCategories('all');
         } catch (error) {
           console.error("Fetching categories failed", error);
         }

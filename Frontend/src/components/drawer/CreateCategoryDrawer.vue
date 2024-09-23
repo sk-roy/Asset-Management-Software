@@ -10,67 +10,60 @@
         <div>
           <v-list>
             <v-list-item>
-              <v-list-item-content>
-                <v-list-item-title>New Category</v-list-item-title>
-              </v-list-item-content>
+              <v-list-item-title>New Category</v-list-item-title>
             </v-list-item>
           </v-list>
         
-      <v-card
-        class="mx-auto pa-12 pb-8"
-        elevation="8"
-        max-width="448"
-        rounded="lg"
-      >
-          <v-text-field
-            v-model="model.name"
-            density="compact"
-            label="Category Name"
-            variant="outlined"
-          ></v-text-field>
+          <v-card
+            class="mx-auto pa-12 pb-8"
+            elevation="8"
+            max-width="448"
+            rounded="lg"
+          >
+              <v-text-field
+                v-model="model.name"
+                density="compact"
+                label="Category Name"
+                variant="outlined"
+              ></v-text-field>
 
-          <v-text-field
-            v-model="model.title"
-            density="compact"
-            label="Category Title"
-            variant="outlined"
-          ></v-text-field>
+              <v-text-field
+                v-model="model.title"
+                density="compact"
+                label="Category Title"
+                variant="outlined"
+              ></v-text-field>
 
-          <v-textarea
-            v-model="model.description"
-            label="Description"
-            variant="outlined"
-            density="compact"
-            rows="5"
-            auto-grow
-          ></v-textarea>
+              <v-textarea
+                v-model="model.description"
+                label="Description"
+                variant="outlined"
+                density="compact"
+                rows="5"
+                auto-grow
+              ></v-textarea>
 
-          <v-select
-            v-model="model.type"
-            :items="items"
-            density="compact"
-            label="Select Category Type"
-            variant="outlined"
-          ></v-select>
+              <v-select
+                v-model="model.type"
+                :items="items"
+                density="compact"
+                label="Select Category Type"
+                variant="outlined"
+              ></v-select>
 
-          
-        <div class="d-flex align-center px-8">
-            
-          <v-btn  @click="submit"> Submit </v-btn>
-          <v-spacer></v-spacer>
-          <v-btn @click="handleReset"> clear </v-btn>
-          <v-spacer></v-spacer>
-          <v-btn @click="closeDrawer"> Cancel </v-btn>
-        </div>
+              
+            <div class="d-flex align-center px-8">
+                
+              <v-btn  @click="submit"> Submit </v-btn>
+              <v-spacer></v-spacer>
+              <v-btn @click="handleReset"> clear </v-btn>
+              <v-spacer></v-spacer>
+              <v-btn @click="closeDrawer"> Cancel </v-btn>
+            </div>
 
-
-          
-
-          
-    </v-card>
+          </v-card>
 
       </div>
-
       </v-navigation-drawer>
     </div>
   </template>
@@ -127,7 +120,7 @@ import apiClient from '@/plugins/axios';
         try {
           await apiClient.post('/categories', this.model); 
           this.handleReset();
-          this.closeDrawer();
+          window.location.reload();
         } catch (error) {
           console.error("Failed to create new task:", error);
         }

@@ -19,21 +19,38 @@ class CategoryController extends Controller
 
     public function index(Request $request)
     {
+        Log::info('Get Category [index] started.', ['request' => request()->all()]);
+        $response = [
+            'success' => false,
+            'data' => [],
+            'message' => ''
+        ];
         try {
             $categories = $this->categoryService->getCategories($request->query('type'));
+            
+            $response['success'] = true;
+            $response['data'] = $categories;
+            $response['message'] = 'Categories loaded succesfully.';
+            Log::info($response['message'], ['response' => $response]);
 
-            return response()->json([
-                'categories'=> $categories,
-                'message'=> 'Categories loaded succesfully',
-            ], 200);
         } catch (\Exception $e) {
-            Log::error('Categories loading failed:', ['error' => $e->getMessage()]);
-            return response()->json(['message' => 'Categories loading failed'], 500);
+            Log::error('Categories loading failed:', ['error' => $e->getMessage()]);            
+            $response['success'] = false;
+            $response['message'] = 'Categories loading Failed.';
         }
+
+        Log::info('Get Category [index] completed', ['response' => $response]);
+        return response()->json($response);
     }
 
     public function store(Request $request)
     {
+        Log::info('Create Category [store] started.', ['request' => request()->all()]);
+        $response = [
+            'success' => false,
+            'data' => [],
+            'message' => ''
+        ];
         try {
             $request->validate([
                 'name' => 'required|string|unique:categories,name',
@@ -47,41 +64,67 @@ class CategoryController extends Controller
                 auth()->id(),
                 $request->input('fields')
             );
-
-            return response()->json([
-                'message' => 'Category created successfully', 
-                'category' => $category
-            ], 201);
+            
+            $response['success'] = true;
+            $response['data'] = $category;
+            $response['message'] = 'Categories created succesfully.';
+            Log::info($response['message'], ['response' => $response]);
         } catch (\Exception $e) {
-            Log::error('Error creating category:', ['error' => $e->getMessage()]);
-            return response()->json(['message' => 'Failed to create category'], 500);
+            Log::error('Creating category failed:', ['error' => $e->getMessage()]);         
+            $response['success'] = false;
+            $response['message'] = 'Creating category failed.';
         }
+
+        Log::info('Create Category [store] completed', ['response' => $response]);
+        return response()->json($response);
     }
 
     public function destroy($id)
     {
+        Log::info('Deleting Category [destroy] started.', ['request' => request()->all()]);
+        $response = [
+            'success' => false,
+            'data' => [],
+            'message' => ''
+        ];
         try {            
             $task = Category::findOrFail($id);
             $this->categoryService->delete($id);
-                
-            return response()->json(['message' => 'Category deleted successfully.']);
-        } catch (Exception $e) {            
-            return response()->json(['message' => 'Request Failed.']);
+            
+            $response['success'] = true;
+            $response['message'] = 'Category deleted succesfully.';
+            Log::info($response['message'], ['response' => $response]);
+        } catch (Exception $e) {               
+            $response['success'] = false;
+            $response['message'] = 'Deleting category Failed.';      
         }
+
+        Log::info('Deleting Category [destroy] completed', ['response' => $response]);
+        return response()->json($response);
     }
 
     public function getFields($id)
     {
+        Log::info('Get Category fields [getFields] started.', ['request' => request()->all()]);
+        $response = [
+            'success' => false,
+            'data' => [],
+            'message' => ''
+        ];
         try {
             $fields = $this->categoryService->getFields($id);
-
-            return response()->json([
-                'fields'=> $fields,
-                'message'=> 'Fields loaded succesfully',
-            ], 200);
+            
+            $response['success'] = true;
+            $response['data'] = $fields;
+            $response['message'] = 'Categories loaded succesfully.';
+            Log::info($response['message'], ['response' => $response]);
         } catch (\Exception $e) {
-            Log::error('Fields loading failed:', ['error' => $e->getMessage()]);
-            return response()->json(['message' => 'Fields loading failed'], 500);
+            Log::error('Category fields loading:', ['error' => $e->getMessage()]);         
+            $response['success'] = false;
+            $response['message'] = 'Category fields loading Failed.';
         }
+
+        Log::info('Get Category fields [getFields] completed', ['response' => $response]);
+        return response()->json($response);
     }
 }

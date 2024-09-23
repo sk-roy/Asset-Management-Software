@@ -49,7 +49,7 @@ class CategoryService
     public function getCategories($type) 
     {
         try {
-            if ($type == "")
+            if ($type === "all")
                 $categories = Category::all();
             else
                 $categories = Category::where('type', $type)->get();

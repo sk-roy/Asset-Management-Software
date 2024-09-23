@@ -30,18 +30,18 @@ const store = createStore({
   },
   actions: {
     async login({ commit }, { email, password }) {
-        const response = await apiClient.post('/login', { email, password })
-        const token = response.data.token
-        const user = response.data.user
+        const response = await apiClient.post('/login', { email, password });
+        const token = response.data.token;
+        const user = response.data.user;
 
-        commit('SET_TOKEN', token)
-        commit('SET_USER', user)
+        commit('SET_TOKEN', token);
+        commit('SET_USER', user);
 
         return response;
     },
 
     async logout({ commit }) {
-        const response = await apiClient.post('/logout')
+        const response = await apiClient.post('/logout');
 
         commit('SET_USER', null);
         commit('SET_TOKEN', null);
@@ -49,25 +49,24 @@ const store = createStore({
     },
 
     async fetchAssets({ commit }) {
-        const response = await apiClient.get('/assets')
-        const assets = response.data.assets
-        commit('SET_ASSETS', assets)    
+        const response = await apiClient.get('/assets');
+        const assets = response.data.data;
+        commit('SET_ASSETS', assets);  
     },
 
     async fetchEvents({ commit }) {
-        const response = await apiClient.get('/events')
-        const events = response.data.events
-        commit('SET_EVENTS', events)    
+        const response = await apiClient.get('/events');
+        const events = response.data.data;
+        commit('SET_EVENTS', events);    
     },
 
     async fetchCategories({ commit }, { type }) {
-        const response = await apiClient.get('/categories', { params: { type: type } })
-        const categories = response.data.categories
-        commit('SET_CATEGORIES', {type, categories})    
+        const response = await apiClient.get('/categories', { params: { type: type } });
+        const categories = response.data.data;
+        commit('SET_CATEGORIES', {type, categories});    
     }
   },
   getters: {
-    // Getters to access state
     isAuthenticated(state) {
       return state.isAuthenticated;
     },
@@ -88,7 +87,7 @@ const store = createStore({
     }
   },
   modules: {
-    // You can add additional modules for modularization
+    //
   }
 })
 
