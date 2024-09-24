@@ -1,5 +1,6 @@
 import apiClient from '@/plugins/axios';
 import { createStore } from 'vuex'
+import Cookies from 'js-cookie';
 
 const store = createStore({
   state: {
@@ -41,29 +42,53 @@ const store = createStore({
     },
 
     async logout({ commit }) {
+      try {
         const response = await apiClient.post('/logout');
 
         commit('SET_USER', null);
         commit('SET_TOKEN', null);
         return response;
+      } catch (error) {
+        this.handleError(error, 'Error while logging out');
+      }
     },
 
     async fetchAssets({ commit }) {
-        const response = await apiClient.get('/assets');
-        const assets = response.data.data;
-        commit('SET_ASSETS', assets);  
+      try {
+          const response = await apiClient.get('/assets');
+          const assets = response.data.data;
+          commit('SET_ASSETS', assets);  
+        } catch (error) {
+          this.handleError(error, 'Error fetching assets');
+      }
     },
 
     async fetchEvents({ commit }) {
+      try {
         const response = await apiClient.get('/events');
         const events = response.data.data;
-        commit('SET_EVENTS', events);    
+        commit('SET_EVENTS', events);   
+      } catch (error) {
+        this.handleError(error, 'Error fetching events');
+      } 
     },
 
     async fetchCategories({ commit }, { type }) {
+      try {
         const response = await apiClient.get('/categories', { params: { type: type } });
         const categories = response.data.data;
-        commit('SET_CATEGORIES', {type, categories});    
+        commit('SET_CATEGORIES', {type, categories}); 
+      } catch (error) {
+        this.handleError(error, 'Error fetching categories');
+      }   
+    },
+
+    handleError({error, errorMessage}) {
+      if (error.response && error.response.status === 401) {
+        Cookies.remove('auth_token', { path: '/' })
+      } else {
+          console.error(`${errorMessage}: `, error);
+      }
     }
   },
   getters: {
@@ -78,6 +103,9 @@ const store = createStore({
     },
     getAssets(state) {
       return state.assets;
+    },
+    getAsset: (state) => (id) =>  {
+      return state.assets.find(asset => asset.id === id);
     },
     getEvents(state) {
       return state.events;

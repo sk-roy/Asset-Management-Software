@@ -89,7 +89,7 @@ import apiClient from '@/plugins/axios';
           name: "",
           title: "",
           description: "",
-          type: "",
+          type: "Asset",
           fields: [],
         },
         items: ['Asset', 'Event'],

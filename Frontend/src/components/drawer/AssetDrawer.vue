@@ -127,10 +127,17 @@
                 </v-col>
               </v-row>
 
-              
+<!--               
               <v-row class="d-flex justify-center">
                 <v-btn @click="submitForm">Submit</v-btn>
-              </v-row>
+              </v-row> -->
+
+              <div class="d-flex justify-center gap-20 px-8">
+                <v-btn @click="closeDrawer">Cancel</v-btn>
+                <v-btn @click="editAsset" v-if="assetId != null">Edit</v-btn>
+                <v-btn @click="submitForm" v-if="assetId == null">Submit</v-btn>
+              </div>
+
 
           </v-card>
 
@@ -146,17 +153,15 @@ import store from '@/store';
 
   export default {
     props: {
-        isOpen: {
-            type: Boolean,
-            required: false,
-            default: false,
-        },
+      assetId: {
+        type: Number,
+      },
     },
 
     data() {
       return {
         customWidth: 700,
-        open: this.isOpen,
+        open: false,
         
         model: {
           title: "",
@@ -179,37 +184,39 @@ import store from '@/store';
           weight: "",
         },
 
-        selectedCategory: null,
-        categories: [
-          { name: 'Land or Flat', id: 1 },
-          { name: 'Electronic Device', id: 2 },
-          { name: 'Furniture', id: 3 },
-          { name: 'Vehicle', id: 4 },
-          { name: 'Jewelry', id: 5 },
-        ],
+        categories: [],
       }
     },
     
     mounted() {
-      this.fetchCategories()
+      this.fetchCategories();
     },
-
+   
     watch: {
-        isOpen(newVal) {
-            this.open = newVal;
+      assetId: 'fetchAsset',
+      drawer: {
+        handler(newValue) {
+          if (newValue) {
+            this.fetchAsset();
+          }
         },
+      },
     },
 
     methods: {
       closeDrawer() {
-          this.open = false;
-          this.$emit('update:isOpen', false);
+        this.open = false;
+      },
+
+      openDrawer() {
+        this.open = true;
       },
 
       handleReset() {
       },
 
       async fetchCategories() {
+        console.log(this.assetId);
         try {
           await store.dispatch('fetchCategories', { type: "asset" });
           this.categories = store.getters.getCategories('asset');
@@ -232,7 +239,42 @@ import store from '@/store';
 
       onCategoryChange(value) {
         this.model.category_id = value;
-      }
+      },
+
+      fetchAsset() {
+        if (this.assetId != null) {
+          this.model = store.getters.getAsset(this.assetId);
+        } else {
+          this.resetModel();
+        }
+      },
+
+      editAsset() {        
+        console.log('editAsset');
+      },
+
+      resetModel() {
+        this.model = {
+          title: "",
+          description: "",
+          category_id: 1,
+          address: "",
+          flat_number: "",
+          floor_number: "",
+          area: "",
+          purchase_price: "",
+          purchase_date: "",
+          diagram_path: "",
+          latitude: "",
+          longitude: "",
+          brand: "",
+          model: "",
+          capacity: "",
+          specification: "",
+          plate_number: "",
+          weight: "",
+        };
+      },
     },
   }
 </script>

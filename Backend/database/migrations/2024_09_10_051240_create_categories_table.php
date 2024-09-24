@@ -19,6 +19,8 @@ return new class extends Migration
             $table->enum('type', ['Asset', 'Event']);
             
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
+            $table->softDeletes();
+            
             $table->timestamps();
         });
     }

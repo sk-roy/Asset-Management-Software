@@ -89,7 +89,7 @@ class CategoryController extends Controller
         ];
         try {            
             $task = Category::findOrFail($id);
-            $this->categoryService->delete($id);
+            $this->categoryService->softDelete($id);
             
             $response['success'] = true;
             $response['message'] = 'Category deleted succesfully.';

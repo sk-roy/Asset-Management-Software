@@ -31,11 +31,26 @@ class CategoryService
         }
     }
 
-    public function delete($id)
+    public function softDelete($id)
     {
         try {
             $category = Category::findOrFail($id);
             $category->delete();
+        } catch (\ModelNotFoundException $e) {
+            Log::error('Category not found:', ['error' => $e->getMessage()]);
+            return response()->json(['message' => 'Category not found.'], 404);
+        } catch (\Exception $e) {
+            // Log and return error
+            Log::error('Category deletion failed:', ['error' => $e->getMessage()]);
+            return response()->json(['message' => 'Category deletion failed.'], 500);
+        }
+    }
+
+    public function parmanentlyDelete($id)
+    {
+        try {
+            $category = Category::findOrFail($id);
+            $category->forceDelete();
         } catch (\ModelNotFoundException $e) {
             Log::error('Category not found:', ['error' => $e->getMessage()]);
             return response()->json(['message' => 'Category not found.'], 404);
