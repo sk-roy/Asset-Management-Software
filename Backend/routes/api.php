@@ -35,4 +35,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/categories/{id}', [CategoryController::class, 'destroy']);
     Route::get('/categories/{id}/fields', [CategoryController::class, 'getFields']);
     Route::get('/events', [EventController::class, 'index']);
+    
+    Route::get('/notes/{id}', [AssetController::class, 'get']);
+    Route::get('/notes', [AssetController::class, 'getAll']);
+    Route::post('/notes', [AssetController::class, 'store']);
+    Route::patch('/notes/{id}', [AssetController::class, 'update']);
+    Route::delete('/notes/{id}', [AssetController::class, 'delete']);
 });

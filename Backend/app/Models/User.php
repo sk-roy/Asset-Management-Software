@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Asset;
 use App\Models\Category;
+use App\Models\Note;
 use App\Models\User;
 use Laravel\Sanctum\HasAPITokens;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -59,6 +60,12 @@ class User extends Authenticatable
     public function events()
     {
         return $this->hasMany(Event::class);
+    }
+    
+
+    public function notes()
+    {
+        return $this->hasMany(Note::class);
     }
     
 

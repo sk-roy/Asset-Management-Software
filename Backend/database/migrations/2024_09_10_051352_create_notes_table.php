@@ -16,7 +16,9 @@ return new class extends Migration
             $table->string('title')->unique()->nullable();
             $table->text('description')->nullable();    
 
+            $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('asset_id')->nullable()->constrained()->onDelete('cascade');
+            $table->softDeletes();
             
             $table->timestamps();
         });
