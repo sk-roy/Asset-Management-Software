@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\V1;
 
+use App\Models\Asset;
 use App\Http\Controllers\Controller;
 use App\Services\API\V1\AssetService;
 use Illuminate\Http\Request;
@@ -161,6 +162,36 @@ class AssetController extends Controller
         }
 
         Log::info('Method [delete] End.', ['response' => $response, 'user' => auth()->user()]);
+        return response()->json($response);
+    }
+
+    public function deleteAssets(Request $request)
+    {
+
+        Log::info('Method [AssetController.deleteAssets] Start.', ['request' => request()->all(), 'user' => auth()->user()]);
+        $response = [
+            'success' => false,
+            'message' => ''
+        ];
+
+        try {
+            $request->validate([
+                'ids' => 'required|array',
+                'ids.*' => 'exists:assets,id',
+            ]);
+
+            $this->assetService->deleteAssets($request->ids);
+
+            $response['success'] = true;
+            $response['message'] = 'Assets deleted successfully.';
+            Log::info($response['message'], ['response' => $response]);
+
+        } catch (\Exception $e) {
+            $response['message'] = 'Assets deleting failed.';            
+            Log::error($response['message'], ['error' => $e->getMessage()]);
+        }
+
+        Log::info('Method [AssetController.deleteAssets] End.', ['response' => $response, 'user' => auth()->user()]);
         return response()->json($response);
     }
     

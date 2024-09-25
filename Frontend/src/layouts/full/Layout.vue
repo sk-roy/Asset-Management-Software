@@ -1,17 +1,29 @@
-<script setup lang="ts">
+<script>
 import { RouterView } from "vue-router";
 import { ref, onMounted } from "vue";
 import SidebarVue from "./sidebar/Sidebar.vue";
 import HeaderVue from "./header/Header.vue";
+import AssetDrawer from "@/components/drawer/AssetDrawer.vue";
 
-const drawer = ref(undefined || true);
-const innerW = window.innerWidth;
+export default {
+  components: {
+    SidebarVue,
+    HeaderVue,
+    AssetDrawer,
+  },
+  data() {
+    return {
+      drawer: true, // Initialize the drawer state
+    };
+  },
+  mounted() {
+    const innerW = window.innerWidth;
 
-onMounted(() => {
-  if (innerW < 950) {
-    drawer.value = !drawer.value;
-  }
-});
+    if (innerW < 950) {
+      this.drawer = !this.drawer; // Toggle drawer state if window width is less than 950
+    }
+  },
+};
 </script>
 
 <template>
@@ -30,6 +42,10 @@ onMounted(() => {
     >
       <SidebarVue />
     </v-navigation-drawer>
+
+    
+    <AssetDrawer/>
+
     <!-- ---------------------------------------------- -->
     <!---Header -->
     <!-- ---------------------------------------------- -->

@@ -1,19 +1,29 @@
 <template>
     <div>  
       <v-navigation-drawer
-        v-model="open"
-        location="left"
+        v-model="isAssetDrawerOpen"
+        location="right"
         temporary
         :width="customWidth"
         app
       >
         <div>
-          <v-list>
-            <v-list-item>
-              <v-list-item-title>New Asset</v-list-item-title>
-            </v-list-item>
-          </v-list>
-            
+          <v-row class="d-flex justify-space-between">
+            <v-col cols="auto">
+              <v-list>
+                <v-list-item>
+                  <v-list-item-title>New Asset</v-list-item-title>
+                </v-list-item>
+              </v-list>
+            </v-col>
+
+            <v-col cols="auto"  style="padding: 20px;">
+              <v-btn icon @click="closeDrawer" class="mx-auto close-btn">
+                <v-icon>mdi-close</v-icon>
+              </v-btn>
+            </v-col>
+          </v-row>
+                
           <v-card
             class="mx-auto pa-12 pb-8"
             elevation="8"
@@ -127,21 +137,13 @@
                 </v-col>
               </v-row>
 
-<!--               
-              <v-row class="d-flex justify-center">
-                <v-btn @click="createAsset">Submit</v-btn>
-              </v-row> -->
-
               <div class="d-flex justify-center gap-20 px-8">
-                <v-btn @click="closeDrawer">Cancel</v-btn>
-                <v-btn @click="updateAsset" v-if="assetId != null">Update</v-btn>
-                <v-btn @click="deleteAsset" v-if="assetId != null">Delete</v-btn>
-                <v-btn @click="createAsset" v-if="assetId == null">Submit</v-btn>
+                <v-btn @click="closeDrawer" variant="outlined" color="secondary">Cancel</v-btn>
+                <v-btn @click="updateAsset" v-if="assetId != null" variant="outlined" color="success">Update</v-btn>
+                <v-btn @click="createAsset" v-if="assetId == null" variant="outlined" color="success">Submit</v-btn>
               </div>
 
-
           </v-card>
-
         </div>
       </v-navigation-drawer>
     </div>
@@ -150,14 +152,10 @@
 <script>
 import apiClient from '@/plugins/axios';
 import store from '@/store';
+import { mapGetters, mapActions, mapState } from 'vuex';
 
 
   export default {
-    props: {
-      assetId: {
-        type: Number,
-      },
-    },
 
     data() {
       return {
@@ -194,30 +192,25 @@ import store from '@/store';
     },
    
     watch: {
-      assetId: 'fetchAsset',
-      drawer: {
-        handler(newValue) {
-          if (newValue) {
-            this.fetchAsset();
-          }
-        },
+
+      assetId(id) {
+        this.fetchAsset();
       },
+    },
+    computed: {
+      ...mapGetters(['isAssetDrawerOpen']),
+      ...mapState(['assetId'])
     },
 
     methods: {
-      closeDrawer() {
-        this.open = false;
-      },
-
-      openDrawer() {
-        this.open = true;
-      },
-
       handleReset() {
       },
 
+      closeDrawer()  {
+        store.commit('closeDrawer');
+      },
+
       async fetchCategories() {
-        console.log(this.assetId);
         try {
           await store.dispatch('fetchCategories', { type: "asset" });
           this.categories = store.getters.getCategories('asset');
@@ -226,9 +219,7 @@ import store from '@/store';
         }
       },
 
-      async createAsset() {
-        console.log('createAsset', this.model);
-          
+      async createAsset() {          
         try {
           await apiClient.post("/assets", this.model);
           window.location.reload();
@@ -238,29 +229,13 @@ import store from '@/store';
         }
       },
 
-      async updateAsset() {
-        console.log('updateAsset', this.model);
-          
+      async updateAsset() {          
         try {
           await apiClient.patch(`/assets/${this.assetId}`, this.model);
           window.location.reload();
         } catch (error) {
           console.error("Failed to updating new asset:", error);
           alert("Failed to updating new asset.");
-        }
-      },
-
-      async deleteAsset() {   
-        const isConfirmed = window.confirm("Are you sure you want to delete this asset?");
-
-        if (!isConfirmed) {     
-          try {
-            await apiClient.delete(`/assets/${this.assetId}`);
-            window.location.reload();
-          } catch (error) {
-            console.error("Failed to deleting asset:", error);
-            alert("Failed to deleting asset.");
-          }
         }
       },
 

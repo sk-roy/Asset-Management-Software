@@ -10,6 +10,13 @@ const store = createStore({
     assets: [],
     events: [],
     categories: {},
+    assetId: null,
+    drawer: {
+      asset: {
+        isOpen: false,
+        id: null,
+      }
+    }
   },
   mutations: {
     SET_USER(state, user) {
@@ -27,7 +34,19 @@ const store = createStore({
     },
     SET_CATEGORIES(state, { type, categories }) {
         state.categories[type] = categories;
-    }
+    },
+    toggleDrawer(state) {
+      state.drawer.asset.isOpen = !state.drawer.asset.isOpen; 
+    },
+    openDrawer(state) {
+      state.drawer.asset.isOpen = true; 
+    },
+    closeDrawer(state) {
+      state.drawer.asset.isOpen = false;
+    },
+    SET_DRAWER_ASSET_ID(state, id) {
+      state.assetId = id; 
+    },
   },
   actions: {
     async login({ commit }, { email, password }) {
@@ -89,7 +108,7 @@ const store = createStore({
       } else {
           console.error(`${errorMessage}: `, error);
       }
-    }
+    },
   },
   getters: {
     isAuthenticated(state) {
@@ -112,7 +131,9 @@ const store = createStore({
     },
     getCategories: (state)  => (type) => {
       return state.categories[type] || [];
-    }
+    },
+    isAssetDrawerOpen: (state) => state.drawer.asset.isOpen,
+    assetDrawerId: (state) => state.assetId,
   },
   modules: {
     //

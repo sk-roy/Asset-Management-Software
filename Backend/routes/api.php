@@ -4,6 +4,7 @@ use App\Http\Controllers\API\V1\AssetController;
 use App\Http\Controllers\API\V1\AuthController;
 use App\Http\Controllers\API\V1\CategoryController;
 use App\Http\Controllers\API\V1\EventController;
+use App\Http\Controllers\API\V1\NoteController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -28,6 +29,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/assets', [AssetController::class, 'store']);
     Route::patch('/assets/{id}', [AssetController::class, 'update']);
     Route::delete('/assets/{id}', [AssetController::class, 'delete']);
+    Route::delete('/assets', [AssetController::class, 'deleteAssets']);
     Route::get('/assets/{id}/events', [EventController::class, 'loadSortedEventsOfAsset']);
 
     Route::get('/categories', [CategoryController::class, 'index']);
@@ -36,9 +38,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/categories/{id}/fields', [CategoryController::class, 'getFields']);
     Route::get('/events', [EventController::class, 'index']);
     
-    Route::get('/notes/{id}', [AssetController::class, 'get']);
-    Route::get('/notes', [AssetController::class, 'getAll']);
-    Route::post('/notes', [AssetController::class, 'store']);
-    Route::patch('/notes/{id}', [AssetController::class, 'update']);
-    Route::delete('/notes/{id}', [AssetController::class, 'delete']);
+    Route::get('/notes/{id}', [NoteController::class, 'get']);
+    Route::get('/notes', [NoteController::class, 'getAll']);
+    Route::post('/notes', [NoteController::class, 'store']);
+    Route::patch('/notes/{id}', [NoteController::class, 'update']);
+    Route::delete('/notes/{id}', [NoteController::class, 'delete']);
 });

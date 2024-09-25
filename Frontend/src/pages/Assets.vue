@@ -62,12 +62,11 @@
 
                 <!-- Asset Detail Dialog -->
                 <v-dialog v-model="dialog" max-width="700">
-                    <AssetDetails :assetProp="selectedAsset"  :onDelete="deleteAsset"/>
+                    <AssetDetails :assetProp="selectedAsset" :closeDialog="closeDialog"/>
                 </v-dialog>
             </v-card-text>
         </v-card>
         
-        <AssetDrawer :assetId="assetId" ref="assetDrawer" />
     
         <v-row class="hidden-md-and-up">
             <v-col cols="12" v-for="asset in assets" :key="asset.id">
@@ -81,9 +80,9 @@
 <script>
 import store from '@/store';
 import AssetCard from '@/components/cards/AssetCard.vue';
-import AssetDrawer from '@/components/drawer/AssetDrawer.vue';
 import AssetDetails from './Assets/AssetDetails.vue';
-import apiClient from '@/plugins/axios';
+import methods from '@/components/methods';
+import { mapActions } from 'vuex';
 
 export default {
   data () {
@@ -100,8 +99,7 @@ export default {
         ],
         assets: [],
         selected: [],
-
-        openDrawer: false,
+        
         dialog: false,
         selectedAsset: null, 
     }
@@ -109,7 +107,6 @@ export default {
 
   components: {
     AssetCard,
-    AssetDrawer,
     AssetDetails,
   },
   
@@ -123,15 +120,14 @@ export default {
         this.assets = store.getters.getAssets;
     },
 
-    clickCreateAsset() {
-        this.assetId = null;
-        this.$refs.assetDrawer.openDrawer();
+    clickCreateAsset() {        
+        store.commit('SET_DRAWER_ASSET_ID', null);
+        store.commit('openDrawer');
     },
 
     openAssetDialog(item) {
         this.selectedAsset = item;
         this.dialog = true;
-        console.log('openAssetDialog', item);
     },
 
     closeDialog() {
@@ -139,36 +135,14 @@ export default {
     }, 
 
     clickEditAsset() {
-        if (this.selected.length === 1) {
-            this.assetId = this.selected[0]
-            this.$refs.assetDrawer.openDrawer();
+        if (this.selected.length === 1) {            
+            store.commit('SET_DRAWER_ASSET_ID', this.selected[0]);
+            store.commit('openDrawer');
         }
     },
 
-    async deleteAsset(id) {   
-        const isConfirmed = window.confirm("Are you sure you want to delete this asset?");
-
-        if (isConfirmed) {     
-            try {
-                await apiClient.delete(`/assets/${id}`);
-                window.location.reload();
-            } catch (error) {
-                console.error("Failed to deleting asset:", error);
-                alert("Failed to deleting asset.");
-            }
-        }
-    },
-
-    async deleteAssetList() {
-        console.log('deleteAssetList');
-          
-        try {
-          await apiClient.delete(`/assets/${this.assetId}`);
-          window.location.reload();
-        } catch (error) {
-          console.error("Failed to deleting asset:", error);
-          alert("Failed to deleting asset.");
-        }
+    async deleteAssetList() {        
+        methods.deleteAssetList(this.selected);
     },
   }
 }

@@ -97,7 +97,7 @@ class NoteController extends Controller
             
             $response['success'] = true;
             $response['data'] = $note;
-            $response['message'] = 'Notes created successfully.';
+            $response['message'] = 'Note created successfully.';
             Log::info($response['message'], ['response' => $response]);
 
         } catch (\Exception $e) {

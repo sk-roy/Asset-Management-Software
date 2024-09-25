@@ -13,7 +13,7 @@ class AssetService
 {
     public function loadSortedAssetsForUser($userId, $sortKey = 'created_at', $sortOrder = 'asc')
     {
-        Log::info('Method [loadSortedAssetsForUser] Start.', 
+        Log::info('Method [AssetService.loadSortedAssetsForUser] Start.', 
             ['userId' => $userId, 'sortKey' => $sortKey, 'sortOrder' => $sortOrder]);
         $assets = [];
 
@@ -32,14 +32,14 @@ class AssetService
             throw new \Exception('Assets loading failed.');
         }
         
-        Log::info('Method [loadSortedAssetsForUser] End.',
+        Log::info('Method [AssetService.loadSortedAssetsForUser] End.',
             ['userId' => $userId, 'sortKey' => $sortKey, 'sortOrder' => $sortOrder]);
         return $assets;
     }
 
     public function getAsset($id)
     {
-        Log::info('Method [getAsset] Start.', ['id' => $id]);
+        Log::info('Method [AssetService.getAsset] Start.', ['id' => $id]);
         
         try {
             $asset = Asset::findOrFail($id);
@@ -50,13 +50,13 @@ class AssetService
             throw new \Exception('Assets loading failed.');
         }
         
-        Log::info('Method [getAsset] End.', ['asset' => $asset]);
+        Log::info('Method [AssetService.getAsset] End.', ['asset' => $asset]);
         return $asset;
     }
 
     public function create(array $data, $userId, $categoryId)
     {
-        Log::info('Method [create] Start.', 
+        Log::info('Method [AssetService.create] Start.', 
             ['userId' => $userId, 'data' => $data, 'categoryId' => $categoryId]);
 
         try {
@@ -75,7 +75,7 @@ class AssetService
             throw new Exception("An error occurred while creating the asset", 500);
         }
         
-        Log::info('Method [create] End.',
+        Log::info('Method [AssetService.create] End.',
             ['userId' => $userId, 'data' => $data, 'categoryId' => $categoryId]);
         return $asset;
     }
@@ -97,13 +97,13 @@ class AssetService
             throw new Exception("An error occurred while updating asset", 500);
         }
         
-        Log::info('Method [update] End.', ['asset' => $asset]);
+        Log::info('Method [AssetService.update] End.', ['asset' => $asset]);
         return $asset;
     }
 
     public function delete($assetId)
     {
-        Log::info('Method [delete] Start.', ['assetId' => $assetId]);
+        Log::info('Method [AssetService.delete] Start.', ['assetId' => $assetId]);
 
         try {
             $asset = Asset::find($assetId);
@@ -118,6 +118,25 @@ class AssetService
             throw new Exception("An error occurred while deleting asset", 500);
         }
 
-        Log::info('Method [delete] End.', ['assetId' => $assetId]);
+        Log::info('Method [AssetService.delete] End.', ['assetId' => $assetId]);
+    }
+
+    public function deleteAssets(array $list)
+    {
+        Log::info('Method [AssetService.deleteAssets] Start.', ['list' => $list]);
+
+        try {
+            Asset::whereIn('id', $list)->delete();            
+            Log::info('Assets deleted succesfully.');
+
+        } catch (ModelNotFoundException $e) {            
+            Log::error('Assets not found:', ['error' => $e->getMessage()]);
+            throw new Exception("Assets not found", 404);
+        } catch (Exception $e) {            
+            Log::error('Assets deleting failed:', ['error' => $e->getMessage()]);
+            throw new Exception("An error occurred while deleting assets", 500);
+        }
+
+        Log::info('Method [AssetService.deleteAssets] End.', ['list' => $list]);
     }
 }

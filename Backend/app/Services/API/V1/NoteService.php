@@ -18,11 +18,11 @@ class NoteService
 
         try {
             $note = Note::findOrFail($id);
-            Log::error('Note loading completed:', ['note' => $note, 'user' => $user]);
+            Log::error('Note loading completed:', ['note' => $note]);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error('Note loading failed:', ['error' => $e->getMessage()]);
-            throw new \Exception('Note loading failed.');
+            throw new Exception('Note loading failed.');
         }
         
         Log::info('Method [NoteService.get] Start.', ['id' => $id, 'note' => $note]);
@@ -31,18 +31,18 @@ class NoteService
 
     public function getAll()
     {
-        Log::info('Method [NoteService.getNote] Start.', ['id' => $id]);
+        Log::info('Method [NoteService.getNote] Start.');
         
         try {
             $notes = Note::all();
-            Log::error('Note loading completed:', ['notes' => $notes]);
+            Log::info('Note loading completed:', ['notes' => $notes]);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error('Notes loading failed:', ['error' => $e->getMessage()]);
-            throw new \Exception('Notes loading failed.');
+            throw new Exception('Notes loading failed.');
         }
         
-        Log::info('Method [NoteService.getAll] Start.', ['id' => $id, 'notes' => $notes]);
+        Log::info('Method [NoteService.getAll] Start.', ['notes' => $notes]);
         return $notes;
     }
 
@@ -50,11 +50,11 @@ class NoteService
     {
         Log::info('Method [NoteService.create] Start.',['userId' => $userId, 'assetId' => $assetId, 'data' => $data]);
 
-        try {
-            $note = Note::create($data);
+        try {            
+            $user = User::findOrFail($userId);
+            $asset = Asset::findOrFail($assetId);
 
-            $user = User::find($userId);
-            $asset = Asset::find($assetId);
+            $note = Note::create($data);
 
             $note->user()->associate($user);
             $note->asset()->associate($asset);
@@ -70,12 +70,12 @@ class NoteService
         return $note;
     }
 
-    public function update($noteId, array $data)
+    public function update($id, array $data)
     {
-        Log::info('Method [NoteService.update] Start.', ['noteId' => $noteId, 'data' => $data]);
+        Log::info('Method [NoteService.update] Start.', ['id' => $id, 'data' => $data]);
 
         try {
-            $note = Note::find($noteId);
+            $note = Note::findOrFail($id);
             $note->update($data);
             Log::error('Note updated succesfully:', ['note' => $note]);
 
@@ -91,12 +91,12 @@ class NoteService
         return $note;
     }
 
-    public function delete($noteId)
+    public function delete($id)
     {
-        Log::info('Method [NoteService.delete] Start.', ['noteId' => $noteId]);
+        Log::info('Method [NoteService.delete] Start.', ['id' => $id]);
 
         try {
-            $note = Note::find($noteId);
+            $note = Note::findOrFail($id);
             $note->delete();
             Log::info('Note deleted succesfully.');
 
@@ -108,6 +108,6 @@ class NoteService
             throw new Exception("An error occurred while deleting note", 500);
         }
 
-        Log::info('Method [NoteService.delete] End.', ['noteId' => $noteId]);
+        Log::info('Method [NoteService.delete] End.', ['id' => $id]);
     }
 }

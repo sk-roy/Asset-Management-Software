@@ -111,9 +111,9 @@
             </div>
 
             <div class="d-flex justify-center gap-20 px-8">
-              <v-btn @click="goBack">Back</v-btn>
-              <v-btn @click="editAsset">Edit</v-btn>
-              <v-btn @click="triggerDelete">Delete</v-btn>
+              <v-btn @click="goBack"  variant="outlined" color="secondary">Close</v-btn>
+              <v-btn @click="editAsset" variant="outlined" color="success">Edit</v-btn>
+              <v-btn @click="triggerDelete" variant="outlined" color="error">Delete</v-btn>
             </div>
           </v-card>
 
@@ -122,13 +122,17 @@
   </template>
   
   <script>
+import methods from '@/components/methods';
+import store from '@/store';
+import { mapActions, mapMutations, mapGetters } from 'vuex';
+
   export default {
     props: {
         assetProp: {},
-        onDelete: {
+        closeDialog: {
           type: Function,
           required: true,
-        },
+        }
     },
 
     data() {
@@ -147,21 +151,28 @@
       };
     },
 
+    computed: {
+      ...mapGetters(['isAssetDrawerOpen'], ['assetDrawerId']),
+    },
+
     methods: {
+      ...mapActions(['openDrawer']),
       getCategoryName(id) {
         const category = this.categories.find(c => c.id === id);
         return category ? category.name : 'Unknown';
       },
       goBack() {
-        this.$router.go(-1);
+        this.closeDialog();
       },
 
       editAsset() {        
-        console.log('assets', this.assetProp.id);
+        this.goBack();
+        store.commit('SET_DRAWER_ASSET_ID', this.assetProp.id);
+        store.commit('openDrawer');
       },
 
       triggerDelete() {
-        this.onDelete(this.assetProp.id);
+        methods.deleteAsset(this.assetProp.id);
         this.open = false;
       },
 
@@ -171,9 +182,9 @@
   
   <style scoped>
     .scrollable-content {
-      max-height: 400px; /* Set your desired max-height for the dialog content */
-      overflow-y: auto;  /* Enable vertical scrolling */
-      overflow-x: hidden; /* Disable horizontal scrolling */
+      max-height: 400px; 
+      overflow-y: auto;  
+      overflow-x: hidden; 
     }
   </style>
   
