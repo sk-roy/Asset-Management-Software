@@ -19,7 +19,7 @@
                         <v-btn 
                         variant="outlined" 
                         color="error" 
-                        @click="clickDeleteAsset" 
+                        @click="deleteAssetList" 
                         class="hidden-sm-and-down"
                         v-if="selected.length >= 1">
                             Delete
@@ -62,7 +62,7 @@
 
                 <!-- Asset Detail Dialog -->
                 <v-dialog v-model="dialog" max-width="700">
-                    <AssetDetails :assetProp="selectedAsset"/>
+                    <AssetDetails :assetProp="selectedAsset"  :onDelete="deleteAsset"/>
                 </v-dialog>
             </v-card-text>
         </v-card>
@@ -83,6 +83,7 @@ import store from '@/store';
 import AssetCard from '@/components/cards/AssetCard.vue';
 import AssetDrawer from '@/components/drawer/AssetDrawer.vue';
 import AssetDetails from './Assets/AssetDetails.vue';
+import apiClient from '@/plugins/axios';
 
 export default {
   data () {
@@ -144,8 +145,30 @@ export default {
         }
     },
 
-    clickDeleteAsset() {
-        console.log('clickDeleteAsset');
+    async deleteAsset(id) {   
+        const isConfirmed = window.confirm("Are you sure you want to delete this asset?");
+
+        if (isConfirmed) {     
+            try {
+                await apiClient.delete(`/assets/${id}`);
+                window.location.reload();
+            } catch (error) {
+                console.error("Failed to deleting asset:", error);
+                alert("Failed to deleting asset.");
+            }
+        }
+    },
+
+    async deleteAssetList() {
+        console.log('deleteAssetList');
+          
+        try {
+          await apiClient.delete(`/assets/${this.assetId}`);
+          window.location.reload();
+        } catch (error) {
+          console.error("Failed to deleting asset:", error);
+          alert("Failed to deleting asset.");
+        }
     },
   }
 }

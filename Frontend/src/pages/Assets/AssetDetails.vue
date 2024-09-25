@@ -113,6 +113,7 @@
             <div class="d-flex justify-center gap-20 px-8">
               <v-btn @click="goBack">Back</v-btn>
               <v-btn @click="editAsset">Edit</v-btn>
+              <v-btn @click="triggerDelete">Delete</v-btn>
             </div>
           </v-card>
 
@@ -124,6 +125,10 @@
   export default {
     props: {
         assetProp: {},
+        onDelete: {
+          type: Function,
+          required: true,
+        },
     },
 
     data() {
@@ -154,6 +159,12 @@
       editAsset() {        
         console.log('assets', this.assetProp.id);
       },
+
+      triggerDelete() {
+        this.onDelete(this.assetProp.id);
+        this.open = false;
+      },
+
     }
   };
   </script>

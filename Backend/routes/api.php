@@ -24,7 +24,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     
     Route::get('/assets', [AssetController::class, 'index']);
+    Route::get('/assets/{id}', [AssetController::class, 'get']);
     Route::post('/assets', [AssetController::class, 'store']);
+    Route::patch('/assets/{id}', [AssetController::class, 'update']);
+    Route::delete('/assets/{id}', [AssetController::class, 'delete']);
     Route::get('/assets/{id}/events', [EventController::class, 'loadSortedEventsOfAsset']);
 
     Route::get('/categories', [CategoryController::class, 'index']);

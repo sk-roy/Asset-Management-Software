@@ -33,6 +33,7 @@ return new class extends Migration
 
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('category_id')->nullable()->constrained('categories')->onDelete('cascade');
+            $table->softDeletes();
 
             $table->timestamps();
         });

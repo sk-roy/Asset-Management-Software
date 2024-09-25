@@ -51,6 +51,34 @@ class AssetController extends Controller
         return response()->json($response);
     }
 
+    public function get(Request $request, $id): JsonResponse
+    {
+
+        Log::info('Method [get] Start.', ['request' => request()->all(), 'user' => auth()->user()]);
+        $response = [
+            'success' => false,
+            'data' => [],
+            'message' => ''
+        ];
+        try {
+            $asset = $this->assetService->getAsset($id);
+
+            $response['success'] = true;
+            $response['data'] = $asset;
+            $response['message'] = 'Asset loaded successfully.';
+            Log::info($response['message'], ['response' => $response]);
+
+        } catch (\Exception $e) {
+            $response['success'] = false;
+            $response['message'] = 'Assets loadeding failed.';
+            
+            Log::error('Assets loading failed:', ['error' => $e->getMessage()]);
+        }
+
+        Log::info('Method [get] End.', ['response' => $response, 'user' => auth()->user()]);
+        return response()->json($response);
+    }
+
 
     public function store(Request $request) 
     {
@@ -62,33 +90,7 @@ class AssetController extends Controller
             'message' => ''
         ];
         try {
-            $request->validate([
-                'title' => 'required|string',
-                'description' => 'nullable|string',
-                'address' => 'nullable|string',
-                'flat_number' => 'nullable|string',
-                'floor_number' => 'nullable|string',
-                'area' => 'nullable|numeric',
-                'purchase_price' => 'nullable|numeric',
-                'purchase_date' => 'nullable|date',
-                'diagram_path' => 'nullable|string',
-                'latitude' => 'nullable|numeric|between:-90,90',
-                'longitude' => 'nullable|numeric|between:-180,180',
-                'brand' => 'nullable|string',
-                'model' => 'nullable|string',
-                'capacity' => 'nullable|numeric',
-                'specification' => 'nullable|string',
-                'plate_number' => 'nullable|string',
-                'weight' => 'nullable|numeric',
-                'category_id' => 'exists:categories,id',
-            ]);
-    
-            $assetData = $request->only([
-                'title', 'description', 'address', 'flat_number', 'floor_number', 'area',
-                'purchase_price', 'purchase_date', 'diagram_path', 'latitude', 'longitude',
-                'brand', 'model', 'capacity', 'specification', 'plate_number', 'weight'
-            ]);
-    
+            $assetData = $this->getAssetData($request);
             $asset = $this->assetService->create(
                 $assetData,
                 auth()->id(),
@@ -96,6 +98,7 @@ class AssetController extends Controller
             );
             
             $response['success'] = true;
+            $response['data'] = $asset;
             $response['message'] = 'Assets created successfully.';
         } catch (\Exception $e) {
             $response['success'] = false;
@@ -107,6 +110,91 @@ class AssetController extends Controller
         Log::info($response['message'], ['response' => $response, 'user' => auth()->user()]);
         return response()->json($response);
     }
+
+    public function update(Request $request, $id): JsonResponse
+    {
+
+        Log::info('Method [update] Start.', ['request' => request()->all(), 'user' => auth()->user()]);
+        $response = [
+            'success' => false,
+            'data' => [],
+            'message' => ''
+        ];
+        try {
+            $assetData = $this->getAssetData($request);
+            $asset = $this->assetService->update($id, $assetData);
+
+            $response['success'] = true;
+            $response['data'] = $asset;
+            $response['message'] = 'Asset updated successfully.';
+            Log::info($response['message'], ['response' => $response]);
+
+        } catch (\Exception $e) {
+            $response['success'] = false;
+            $response['message'] = 'Asset updating failed.';            
+            Log::error($response['message'], ['error' => $e->getMessage()]);
+        }
+
+        Log::info('Method [update] End.', ['response' => $response, 'user' => auth()->user()]);
+        return response()->json($response);
+    }
+
+    public function delete(Request $request, $id): JsonResponse
+    {
+
+        Log::info('Method [delete] Start.', ['request' => request()->all(), 'user' => auth()->user()]);
+        $response = [
+            'success' => false,
+            'message' => ''
+        ];
+        try {
+            $this->assetService->delete($id);
+
+            $response['success'] = true;
+            $response['message'] = 'Asset deleted successfully.';
+            Log::info($response['message'], ['response' => $response]);
+
+        } catch (\Exception $e) {
+            $response['success'] = false;
+            $response['message'] = 'Asset deleting failed.';            
+            Log::error($response['message'], ['error' => $e->getMessage()]);
+        }
+
+        Log::info('Method [delete] End.', ['response' => $response, 'user' => auth()->user()]);
+        return response()->json($response);
+    }
     
-    
+    private function getAssetData(Request $request)
+    {
+        Log::info('Method [getAssetData] Start.', ['request' => request()->all(), 'user' => auth()->user()]);
+        $request->validate([
+            'title' => 'required|string',
+            'description' => 'nullable|string',
+            'address' => 'nullable|string',
+            'flat_number' => 'nullable|string',
+            'floor_number' => 'nullable|string',
+            'area' => 'nullable|numeric',
+            'purchase_price' => 'nullable|numeric',
+            'purchase_date' => 'nullable|date',
+            'diagram_path' => 'nullable|string',
+            'latitude' => 'nullable|numeric|between:-90,90',
+            'longitude' => 'nullable|numeric|between:-180,180',
+            'brand' => 'nullable|string',
+            'model' => 'nullable|string',
+            'capacity' => 'nullable|numeric',
+            'specification' => 'nullable|string',
+            'plate_number' => 'nullable|string',
+            'weight' => 'nullable|numeric',
+            'category_id' => 'exists:categories,id',
+        ]);
+
+        $assetData = $request->only([
+            'title', 'description', 'address', 'flat_number', 'floor_number', 'area',
+            'purchase_price', 'purchase_date', 'diagram_path', 'latitude', 'longitude',
+            'brand', 'model', 'capacity', 'specification', 'plate_number', 'weight'
+        ]);
+
+        Log::info('Method [getAssetData] End.', ['assetData' => $assetData, 'user' => auth()->user()]);
+        return $assetData;
+    }
 }

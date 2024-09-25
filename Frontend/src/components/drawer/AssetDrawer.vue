@@ -129,13 +129,14 @@
 
 <!--               
               <v-row class="d-flex justify-center">
-                <v-btn @click="submitForm">Submit</v-btn>
+                <v-btn @click="createAsset">Submit</v-btn>
               </v-row> -->
 
               <div class="d-flex justify-center gap-20 px-8">
                 <v-btn @click="closeDrawer">Cancel</v-btn>
-                <v-btn @click="editAsset" v-if="assetId != null">Edit</v-btn>
-                <v-btn @click="submitForm" v-if="assetId == null">Submit</v-btn>
+                <v-btn @click="updateAsset" v-if="assetId != null">Update</v-btn>
+                <v-btn @click="deleteAsset" v-if="assetId != null">Delete</v-btn>
+                <v-btn @click="createAsset" v-if="assetId == null">Submit</v-btn>
               </div>
 
 
@@ -225,8 +226,8 @@ import store from '@/store';
         }
       },
 
-      async submitForm() {
-        console.log('category', this.model);
+      async createAsset() {
+        console.log('createAsset', this.model);
           
         try {
           await apiClient.post("/assets", this.model);
@@ -234,6 +235,32 @@ import store from '@/store';
         } catch (error) {
           console.error("Failed to create new asset:", error);
           alert("Failed to create new asset.");
+        }
+      },
+
+      async updateAsset() {
+        console.log('updateAsset', this.model);
+          
+        try {
+          await apiClient.patch(`/assets/${this.assetId}`, this.model);
+          window.location.reload();
+        } catch (error) {
+          console.error("Failed to updating new asset:", error);
+          alert("Failed to updating new asset.");
+        }
+      },
+
+      async deleteAsset() {   
+        const isConfirmed = window.confirm("Are you sure you want to delete this asset?");
+
+        if (!isConfirmed) {     
+          try {
+            await apiClient.delete(`/assets/${this.assetId}`);
+            window.location.reload();
+          } catch (error) {
+            console.error("Failed to deleting asset:", error);
+            alert("Failed to deleting asset.");
+          }
         }
       },
 
@@ -247,10 +274,6 @@ import store from '@/store';
         } else {
           this.resetModel();
         }
-      },
-
-      editAsset() {        
-        console.log('editAsset');
       },
 
       resetModel() {
