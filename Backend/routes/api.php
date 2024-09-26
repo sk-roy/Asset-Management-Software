@@ -52,4 +52,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/documents', [DocumentController::class, 'store']);
     Route::get('/documents/{id}', [DocumentController::class, 'download']);
     Route::delete('/documents/{id}', [DocumentController::class, 'delete']);
+    Route::post('/documents/{id}/restore', [DocumentController::class, 'restore']);
 });

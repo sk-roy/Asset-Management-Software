@@ -71,8 +71,8 @@ class DocumentService
 
         try { 
             $file = Document::where('id', $id)->firstOrFail();            
-            $document = Storage::disk('public')->download($file->path, $file->filename);
-            Log::info('Document downloaded successfully.', ['file' => $file]);
+            $document = Storage::disk('public')->download($file->path, $file->name);
+            Log::info('Document downloaded successfully.', ['document' => $document]);
         } catch (Exception $e) {
             Log::error('Documents downloading failed:', ['error' => $e->getMessage()]);
             throw new Exception("An error occurred while downloading the document", 500);
@@ -102,5 +102,25 @@ class DocumentService
         }
 
         Log::info('Method [DocumentService.delete] End.', ['id' => $id]);
+    }
+
+    public function restore($id)
+    {
+        Log::info('Method [DocumentService.restore] Start.', ['id' => $id]);
+
+        try {
+            $document = Document::onlyTrashed()->findOrFail($id);
+            $document->restore();
+            Log::info('Document deleted succesfully.');
+        } catch (ModelNotFoundException $e) {            
+            Log::error('Documents not found:', ['error' => $e->getMessage()]);
+            throw new Exception("Document not found", 404);
+        } catch (Exception $e) {            
+            Log::error('Documents restoring failed:', ['error' => $e->getMessage()]);
+            throw new Exception("An error occurred while restoring document", 500);
+        }
+
+        Log::info('Method [DocumentService.restore] End.', ['id' => $id]);
+        return $document;
     }
 }

@@ -99,10 +99,10 @@ import { format } from 'date-fns';
       },
   
       // Handle document download
-      async downloadDocument(document) {
+      async downloadDocument(file) {
         console.log('downloadDocument');
         try {
-          const response = await apiClient.get(`/documents/${document.id}`, {
+          const response = await apiClient.get(`/documents/${file.id}`, {
             responseType: "blob",
           });
 
@@ -112,7 +112,7 @@ import { format } from 'date-fns';
           const url = window.URL.createObjectURL(new Blob([response.data]));
           const link = document.createElement("a");
           link.href = url;
-          link.setAttribute("download", `${document.name}.pdf`);
+          link.setAttribute("download", `${file.name}.pdf`);
           document.body.appendChild(link);
           link.click();
           link.remove();
@@ -125,7 +125,7 @@ import { format } from 'date-fns';
       async deleteDocument(document) {
         if (confirm("Are you sure?")) {
           try {
-            const response = await apiClient.delete(`/documents/${document.id}`);
+            await apiClient.delete(`/documents/${document.id}`);
           } catch (error) {
             console.error("Failed to delete document:", error);
             alert("Failed to delete the document.");

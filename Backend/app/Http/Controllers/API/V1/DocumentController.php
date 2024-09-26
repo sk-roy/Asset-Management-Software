@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\V1;
 
+use App\Models\Document;
 use App\Http\Controllers\Controller;
 use App\Services\API\V1\DocumentService;
 use Illuminate\Http\Request;
@@ -126,6 +127,31 @@ class DocumentController extends Controller
         }
 
         Log::info('Method [DocumentController.delete] End.', ['response' => $response, 'user' => auth()->user()]);
+        return response()->json($response);
+    }
+
+    public function restore(Request $request, $id): JsonResponse
+    {
+        Log::info('Method [DocumentController.restore] Start.', ['request' => request()->all(), 'user' => auth()->user()]);
+        $response = [
+            'success' => false,
+            'data' => [],
+            'message' => ''
+        ];
+        try {
+            $document = $this->documentService->restore($id);
+
+            $response['success'] = true; 
+            $response['data'] = $document; 
+            $response['message'] = 'Document restored successfully.';
+            Log::info($response['message'], ['response' => $response, 'user' => auth()->user()]);
+        } catch (\Exception $e) {
+            $response['success'] = false;
+            $response['message'] = 'Document restore failed.';            
+            Log::error($response['message'], ['error' => $e->getMessage()]);
+        }
+
+        Log::info('Method [DocumentController.restore] End.', ['response' => $response, 'user' => auth()->user()]);
         return response()->json($response);
     }
 }
