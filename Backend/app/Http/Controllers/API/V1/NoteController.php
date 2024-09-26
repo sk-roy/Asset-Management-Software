@@ -112,9 +112,7 @@ class NoteController extends Controller
 
     public function update(Request $request, $id): JsonResponse
     {
-        Log::info('Method [NoteController.get] Start.', ['request' => request()->all(), 'user' => auth()->user()]);
-
-        Log::info('Method [update] Start.', ['request' => request()->all(), 'user' => auth()->user()]);
+        Log::info('Method [NoteController.update] Start.', ['request' => request()->all(), 'user' => auth()->user()]);
         $response = [
             'success' => false,
             'data' => [],

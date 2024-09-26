@@ -125,8 +125,9 @@ export default {
         store.commit('openDrawer');
     },
 
-    openAssetDialog(item) {
-        this.selectedAsset = item;
+    async openAssetDialog(item) {
+        await store.dispatch('fetchAssetDetails', { id: item.id });
+        this.selectedAsset = store.getters.getAssetDetails(item.id);
         this.dialog = true;
     },
 

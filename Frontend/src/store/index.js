@@ -16,7 +16,8 @@ const store = createStore({
         isOpen: false,
         id: null,
       }
-    }
+    },
+    notes: {},
   },
   mutations: {
     SET_USER(state, user) {
@@ -28,6 +29,14 @@ const store = createStore({
     },
     SET_ASSETS(state, assets) {
         state.assets = assets;
+    },
+    SET_ASSET_DETAILS(state, {id, asset}) {
+      const index = state.assets.findIndex(a => a.id === id);
+      if (index !== -1) {
+          state.assets.splice(index, 1, asset);
+      } else {
+          state.assets.push(asset);
+      }
     },
     SET_EVENTS(state, events) {
         state.events = events;
@@ -46,6 +55,9 @@ const store = createStore({
     },
     SET_DRAWER_ASSET_ID(state, id) {
       state.assetId = id; 
+    },
+    SET_NOTES(state, { assetId, notes }) {
+        state.notes[assetId] = notes;
     },
   },
   actions: {
@@ -82,6 +94,17 @@ const store = createStore({
       }
     },
 
+    async fetchAssetDetails({ commit }, { id }) {
+      try {
+          const response = await apiClient.get(`/assets/${id}`);
+          console.log('store fetchAssetDetails', id, response);
+          const asset = response.data.data;
+          commit('SET_ASSET_DETAILS', { id, asset });  
+        } catch (error) {
+          this.handleError(error, 'Error fetching assets');
+      }
+    },
+
     async fetchEvents({ commit }) {
       try {
         const response = await apiClient.get('/events');
@@ -99,6 +122,16 @@ const store = createStore({
         commit('SET_CATEGORIES', {type, categories}); 
       } catch (error) {
         this.handleError(error, 'Error fetching categories');
+      }   
+    },
+
+    async fetchNotes({ commit }, { assetId }) {
+      try {
+        const response = await apiClient.get(`/assets/${assetId}/notes`, { params: { assetId: assetId } });
+        const notes = response.data.data;
+        commit('SET_CATEGORIES', {assetId, notes}); 
+      } catch (error) {
+        this.handleError(error, 'Error fetching notes');
       }   
     },
 
@@ -123,7 +156,7 @@ const store = createStore({
     getAssets(state) {
       return state.assets;
     },
-    getAsset: (state) => (id) =>  {
+    getAssetDetails: (state) => (id) =>  {
       return state.assets.find(asset => asset.id === id);
     },
     getEvents(state) {
@@ -131,6 +164,9 @@ const store = createStore({
     },
     getCategories: (state)  => (type) => {
       return state.categories[type] || [];
+    },
+    getNotes: (state) => (assetId) => {
+      return state.notes[assetId] || [];
     },
     isAssetDrawerOpen: (state) => state.drawer.asset.isOpen,
     assetDrawerId: (state) => state.assetId,

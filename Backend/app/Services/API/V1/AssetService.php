@@ -42,8 +42,14 @@ class AssetService
         Log::info('Method [AssetService.getAsset] Start.', ['id' => $id]);
         
         try {
-            $asset = Asset::findOrFail($id);
-            Log::error('Asset loading completed:', ['asset' => $asset]);
+            $asset = Asset::with(['notes', 'documents'])->find($id);
+
+            if (!$asset) {
+                Log::error('Asset not found:', ['error' => $e->getMessage()]);
+                throw new \Exception('Asset not found.');
+            }
+
+            Log::info('Asset loading completed:', ['asset' => $asset]);
 
         } catch (Exception $e) {
             Log::error('Assets loading failed:', ['error' => $e->getMessage()]);
@@ -52,6 +58,24 @@ class AssetService
         
         Log::info('Method [AssetService.getAsset] End.', ['asset' => $asset]);
         return $asset;
+    }
+
+    public function getAssetNotes($id)
+    {
+        Log::info('Method [AssetService.getAssetNotes] Start.', ['id' => $id]);
+        
+        try {
+            $asset = Asset::findOrFail($id);
+            $notes = $asset->notes()->get();
+            Log::error('Asset loading completed:', ['asset' => $asset, 'notes' => $notes]);
+
+        } catch (Exception $e) {
+            Log::error('Assets loading failed:', ['error' => $e->getMessage()]);
+            throw new \Exception('Assets loading failed.');
+        }
+        
+        Log::info('Method [AssetService.getAssetNotes] End.', ['asset' => $asset, 'notes' => $notes]);
+        return $notes;
     }
 
     public function create(array $data, $userId, $categoryId)

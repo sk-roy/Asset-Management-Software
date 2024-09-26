@@ -107,6 +107,9 @@
                 <p><strong>Weight: </strong>{{ asset.weight }}</p>
               </v-col>
             </v-row>
+
+
+            <AssetNotes :assetProp="assetProp"/>
   
             </div>
 
@@ -124,7 +127,7 @@
   <script>
 import methods from '@/components/methods';
 import store from '@/store';
-import { mapActions, mapMutations, mapGetters } from 'vuex';
+import AssetNotes from './AssetNotes.vue';
 
   export default {
     props: {
@@ -135,11 +138,16 @@ import { mapActions, mapMutations, mapGetters } from 'vuex';
         }
     },
 
+    components: {
+      AssetNotes,
+    },
+
     data() {
       return {
         open: true,
         customWidth: 700,
         asset: this.assetProp,
+        notes: [],
         
         categories: [
           { id: 1, name: 'Land/Flat' },
@@ -151,12 +159,11 @@ import { mapActions, mapMutations, mapGetters } from 'vuex';
       };
     },
 
-    computed: {
-      ...mapGetters(['isAssetDrawerOpen'], ['assetDrawerId']),
+    mounted() {
+      this.fetchNotes();
     },
 
     methods: {
-      ...mapActions(['openDrawer']),
       getCategoryName(id) {
         const category = this.categories.find(c => c.id === id);
         return category ? category.name : 'Unknown';
@@ -174,6 +181,15 @@ import { mapActions, mapMutations, mapGetters } from 'vuex';
       triggerDelete() {
         methods.deleteAsset(this.assetProp.id);
         this.open = false;
+      },
+
+      async fetchNotes() {
+        try {
+          await store.dispatch('fetchNotes', { type: this.assetProp.id });
+          this.notes = store.getters.getNotes(this.assetProp.id);
+        } catch (error) {
+          console.error("Fetching notes failed", error);
+        }
       },
 
     }

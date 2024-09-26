@@ -43,7 +43,7 @@ class AssetController extends Controller
             }
         } catch (\Exception $e) {
             $response['success'] = false;
-            $response['message'] = 'Assets loadeding failed.';
+            $response['message'] = 'Assets loading failed.';
             
             Log::error('Assets loading failed:', ['error' => $e->getMessage()]);
         }
@@ -71,12 +71,40 @@ class AssetController extends Controller
 
         } catch (\Exception $e) {
             $response['success'] = false;
-            $response['message'] = 'Assets loadeding failed.';
+            $response['message'] = 'Assets loading failed.';
             
             Log::error('Assets loading failed:', ['error' => $e->getMessage()]);
         }
 
         Log::info('Method [get] End.', ['response' => $response, 'user' => auth()->user()]);
+        return response()->json($response);
+    }
+
+    public function getNotes(Request $request, $id): JsonResponse
+    {
+
+        Log::info('Method [AssetController.getNotes] Start.', ['request' => request()->all(), 'user' => auth()->user()]);
+        $response = [
+            'success' => false,
+            'data' => [],
+            'message' => ''
+        ];
+        try {
+            $asset = $this->assetService->getAssetNotes($id);
+
+            $response['success'] = true;
+            $response['data'] = $asset;
+            $response['message'] = 'Asset notes loaded successfully.';
+            Log::info($response['message'], ['response' => $response]);
+
+        } catch (\Exception $e) {
+            $response['success'] = false;
+            $response['message'] = 'Asset notes loading failed.';
+            
+            Log::error('Asset notes loading failed:', ['error' => $e->getMessage()]);
+        }
+
+        Log::info('Method [AssetController.getNotes] End.', ['response' => $response, 'user' => auth()->user()]);
         return response()->json($response);
     }
 
