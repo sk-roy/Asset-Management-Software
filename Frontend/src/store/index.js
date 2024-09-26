@@ -16,6 +16,12 @@ const store = createStore({
       asset: {
         isOpen: false,
         id: null,
+      },
+      event: {
+        isOpen: false,
+        id: null,
+        asset_id: null,
+        category_id: null,
       }
     },
     notes: {},
@@ -29,7 +35,7 @@ const store = createStore({
       state.isAuthenticated = !!token;
     },
     SET_ASSETS(state, assets) {
-        state.assets = assets;
+      state.assets = assets;
     },
     SET_ASSET_DETAILS(state, {id, asset}) {
       const index = state.assets.findIndex(a => a.id === id);
@@ -40,10 +46,10 @@ const store = createStore({
       }
     },
     SET_EVENTS(state, events) {
-        state.events = events;
+      state.events = events;
     },
     SET_CATEGORIES(state, { type, categories }) {
-        state.categories[type] = categories;
+      state.categories[type] = categories;
     },
     toggleDrawer(state) {
       state.drawer.asset.isOpen = !state.drawer.asset.isOpen; 
@@ -54,8 +60,23 @@ const store = createStore({
     closeDrawer(state) {
       state.drawer.asset.isOpen = false;
     },
+    openEventDrawer(state) {
+      state.drawer.event.isOpen = true; 
+    },
+    closeEventDrawer(state) {
+      this.commit('SET_DRAWER_EVENT', { isOpen: false});
+    },
     SET_DRAWER_ASSET_ID(state, id) {
       state.assetId = id; 
+    },
+    SET_DRAWER_EVENT_ID(state, id) {
+      state.drawer.event.id = id; 
+    },
+    SET_DRAWER_EVENT(state, {isOpen, id, assetId, categoryId}) {
+      state.drawer.event.isOpen = isOpen;
+      state.drawer.event.id = id;
+      state.drawer.event.assetId = assetId;
+      state.drawer.event.categoryId = categoryId;
     },
     SET_NOTES(state, { assetId, notes }) {
         state.notes[assetId] = notes;
@@ -117,13 +138,10 @@ const store = createStore({
 
     async fetchCategories({ commit }, { type }) {
       try {
-        console.log('fetchCategories');
         const response = await apiClient.get('/categories', { params: { type: type } });
         const categories = response.data.data;
         commit('SET_CATEGORIES', {type, categories}); 
-        console.log('fetchCategories done', categories);
       } catch (error) {
-        console.log('fetchCategories error', error);
         methods.handleUnauthorizedError(error, 'Error fetching categories');
       }   
     },
@@ -165,6 +183,11 @@ const store = createStore({
     },
     isAssetDrawerOpen: (state) => state.drawer.asset.isOpen,
     assetDrawerId: (state) => state.assetId,
+
+    eventDrawerIsOpen: (state) => state.drawer.event.isOpen,
+    eventDrawerEventId: (state) => state.drawer.event.id,
+    eventDrawerCategoryId: (state) => state.drawer.event.categoryId,
+    eventDrawerAssetId: (state) => state.drawer.event.assetId,
   },
   modules: {
     //

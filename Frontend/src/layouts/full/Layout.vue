@@ -4,12 +4,14 @@ import { ref, onMounted } from "vue";
 import SidebarVue from "./sidebar/Sidebar.vue";
 import HeaderVue from "./header/Header.vue";
 import AssetDrawer from "@/components/drawer/AssetDrawer.vue";
+import EventDrawer from "@/components/drawer/EventDrawer.vue";
 
 export default {
   components: {
     SidebarVue,
     HeaderVue,
     AssetDrawer,
+    EventDrawer,
   },
   data() {
     return {
@@ -45,6 +47,7 @@ export default {
 
     
     <AssetDrawer/>
+    <EventDrawer/>
 
     <!-- ---------------------------------------------- -->
     <!---Header -->

@@ -12,7 +12,7 @@
             <v-col cols="auto">
               <v-list>
                 <v-list-item>
-                  <v-list-item-title>New Asset</v-list-item-title>
+                  <v-list-item-title> {{ assetId == null ? 'New Asset' : 'Editing Asset' }} </v-list-item-title>
                 </v-list-item>
               </v-list>
             </v-col>

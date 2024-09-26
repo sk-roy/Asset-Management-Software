@@ -13,10 +13,11 @@ return new class extends Migration
     {
         Schema::create('documents', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
-            $table->string('path');
-            $table->string('mime_type');
-            $table->integer('size');
+            $table->string('name')->nullable();
+            $table->string('title')->nullable();
+            $table->string('path')->nullable();
+            $table->string('mime_type')->nullable();
+            $table->integer('size')->nullable();
             
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('asset_id')->nullable()->constrained()->onDelete('cascade');

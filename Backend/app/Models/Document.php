@@ -13,7 +13,7 @@ class Document extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'name', 'path', 'mime_type', 'size',
+        'name', 'title', 'path', 'mime_type', 'size',
     ];
 
     public function user()

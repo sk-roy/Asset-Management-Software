@@ -38,15 +38,19 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/categories', [CategoryController::class, 'store']);
     Route::delete('/categories/{id}', [CategoryController::class, 'destroy']);
     Route::get('/categories/{id}/fields', [CategoryController::class, 'getFields']);
+
     Route::get('/events', [EventController::class, 'index']);
-    
+    Route::get('/events/{id}', [EventController::class, 'get']);
+    Route::post('/events', [EventController::class, 'store']);
+    Route::patch('/events/{id}', [EventController::class, 'update']);
+    Route::delete('/events/{id}', [EventController::class, 'delete']);
+    Route::delete('/events', [EventController::class, 'deleteList']);
+
     Route::get('/notes/{id}', [NoteController::class, 'get']);
     Route::get('/notes', [NoteController::class, 'getAll']);
     Route::post('/notes', [NoteController::class, 'store']);
     Route::patch('/notes/{id}', [NoteController::class, 'update']);
-    Route::delete('/notes/{id}', [NoteController::class, 'delete']);
-
-    
+    Route::delete('/notes/{id}', [NoteController::class, 'delete']);    
 
     Route::get('/documents', [DocumentController::class, 'show']);
     Route::post('/documents', [DocumentController::class, 'store']);

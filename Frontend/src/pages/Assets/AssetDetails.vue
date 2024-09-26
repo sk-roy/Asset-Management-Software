@@ -108,6 +108,10 @@
               </v-col>
             </v-row>
 
+            
+            <v-row cols="4" class="d-flex align-center justify-center gap-10">
+                <v-btn color="primary" @click="createEvent">Create Event</v-btn>
+            </v-row>
 
             <AssetNotes :assetProp="assetProp"/>
             <AssetDocuments :pAsset="assetProp"/>
@@ -167,6 +171,10 @@ import AssetDocuments from './AssetDocuments.vue';
     },
 
     methods: {
+      createEvent() {  
+          this.closeDialog();
+          store.commit('SET_DRAWER_EVENT', { isOpen: true, assetId: this.asset.id});
+      },
       getCategoryName(id) {
         const category = this.categories.find(c => c.id === id);
         return category ? category.name : 'Unknown';

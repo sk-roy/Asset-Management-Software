@@ -11,8 +11,7 @@ const methods = {
                 await apiClient.delete(`/assets/${id}`);
                 window.location.reload();
             } catch (error) {
-                console.error("Failed to deleting asset:", error);
-                alert("Failed to deleting asset.");
+                this.handleUnauthorizedError(error, 'Failed to deleting asset.');
             }
         }
     },
@@ -29,8 +28,7 @@ const methods = {
                 await apiClient.delete('/assets', { data: { ids: list }});
                 window.location.reload();
             } catch (error) {
-                console.error("Failed to deleting asset:", error);
-                alert("Failed to deleting asset.");
+                this.handleUnauthorizedError(error, 'Failed to deleting asset.');
             }
         }
     },

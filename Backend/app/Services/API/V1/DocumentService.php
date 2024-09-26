@@ -40,11 +40,13 @@ class DocumentService
             $user = auth()->user();
             $asset = Asset::findOrFail($assetId);
 
-            $documentname = $uploadedDocument->getClientOriginalName();
-            $path = $uploadedDocument->storeAs('uploads/' . $assetId, $documentname, 'public');
+            $documentTitle = $uploadedDocument->getClientOriginalName();
+            $documentName = time() . '_' . $documentTitle;
             
+            $path = $uploadedDocument->storeAs('uploads', $documentName, 'public');
             $document = Document::create([
-                'name'  => $documentname,
+                'name'  => $documentName,
+                'title' => $documentTitle,
                 'path'      => $path,
                 'mime_type' => $uploadedDocument->getClientMimeType(),
                 'size'      => $uploadedDocument->getSize(),
@@ -88,7 +90,6 @@ class DocumentService
 
         try {
             $file = Document::where('id', $id)->where('user_id', auth()->id())->firstOrFail();
-            Storage::disk('public')->delete($file->path);
             $file->delete();
 
             Log::info('Document deleted succesfully.');

@@ -2,7 +2,7 @@
     <v-container>   
       <v-col cols="12">
       <v-row>
-        <h3 v-if="documents && documents.length > 0">Documents</h3>
+        <h3 v-if="asset.documents && asset.documents.length > 0">Documents</h3>
       </v-row>
       
       <!-- Display and Download Documents -->
@@ -10,7 +10,7 @@
         <v-col cols="12">
           <v-list>
             <v-list-item
-              v-for="(document, index) in documents"
+              v-for="(document, index) in asset.documents"
               :key="index"
             >
                 <v-row>
@@ -21,7 +21,7 @@
                       class="p-1"
                       style="text-decoration: none"
                     >
-                      <v-list-item-title>{{ document.name }}</v-list-item-title>
+                      <v-list-item-title>{{ document.title }}</v-list-item-title>
                     </a>
                     <v-list-item-subtitle>{{ formatDate(document.created_at) }}</v-list-item-subtitle>
                   </v-col>
@@ -59,16 +59,17 @@
   
   <script>
 import apiClient from '@/plugins/axios';
+import store from '@/store';
 import { format } from 'date-fns';
 
   export default {
     props: {
-      pAsset: null,
+      pAsset: Object,
     },
     data() {
       return {
+        asset: this.pAsset,
         documentFile: null, // Holds the selected file
-        documents: this.pAsset.documents,
       };
     },
     methods: {
@@ -87,9 +88,9 @@ import { format } from 'date-fns';
             },
           });
 
-          this.documentFile = null;
           if (response.data.success) {
-            this.documents.push(response.data.data);
+            this.documentFile = null;
+            this.reloadAsset();
           }
         
         } catch (error) {
@@ -112,7 +113,7 @@ import { format } from 'date-fns';
           const url = window.URL.createObjectURL(new Blob([response.data]));
           const link = document.createElement("a");
           link.href = url;
-          link.setAttribute("download", `${file.name}.pdf`);
+          link.setAttribute("download", file.title);
           document.body.appendChild(link);
           link.click();
           link.remove();
@@ -126,11 +127,18 @@ import { format } from 'date-fns';
         if (confirm("Are you sure?")) {
           try {
             await apiClient.delete(`/documents/${document.id}`);
+            this.reloadAsset();
           } catch (error) {
             console.error("Failed to delete document:", error);
             alert("Failed to delete the document.");
           }
         }
+      },
+        
+      async reloadAsset() {
+          await store.dispatch('fetchAssetDetails', { id: this.pAsset.id });
+          this.asset = store.getters.getAssetDetails(this.pAsset.id);
+          console.log('reloadAsset', this.pAsset.documents);
       },
     
       formatDate(date) {

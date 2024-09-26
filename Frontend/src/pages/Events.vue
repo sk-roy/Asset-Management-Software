@@ -28,6 +28,12 @@ export default {
         }
       },
       
+
+      clickCreateEvent() {        
+          store.commit('SET_DRAWER_EVENT_ID', null);
+          store.commit('openEventDrawer');
+      },
+      
         formatDate(date) {
             return format(date, 'MMMM dd, yyyy, hh:mm a');
         }
@@ -37,14 +43,20 @@ export default {
 
 <template>
   <div>
-    <v-card flat class="w-100 h-100 hidden-sm-and-down">
+    <v-card flat class="w-100 h-100 mb-4">
       <v-card-text>
-        <div class="d-sm-flex align-center">
+        <div class="d-flex align-center">
           <div>
-            <h2 class="title text-h6 font-weight-medium">Event List</h2>
+            <h2 class="title text-h6 font-weight-medium">Events</h2>
+          </div>
+          <v-spacer></v-spacer>
+          <div>
+              <v-btn variant="outlined" color="secondary" @click="clickCreateEvent">
+                  Add new Event
+              </v-btn>
           </div>
         </div>
-        <v-table class="month-table mt-7">
+        <v-table class="month-table mt-7 hidden-sm-and-down">
           <template v-slot:default>
             <thead>
               <tr>
