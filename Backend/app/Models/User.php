@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Asset;
 use App\Models\Category;
+use App\Models\Document;
 use App\Models\Note;
 use App\Models\User;
 use Laravel\Sanctum\HasAPITokens;
@@ -66,6 +67,12 @@ class User extends Authenticatable
     public function notes()
     {
         return $this->hasMany(Note::class);
+    }
+    
+
+    public function documents()
+    {
+        return $this->hasMany(Document::class);
     }
     
 

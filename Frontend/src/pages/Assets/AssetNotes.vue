@@ -1,33 +1,33 @@
 <template>
-    <v-row>
+    <v-container>
       <v-col cols="12">
-        <h3>Notes</h3>
+        <v-row>
+          <h3 v-if="asset.notes && asset.notes.length > 0">Notes</h3>
+        </v-row>
         
         <!-- Display Notes -->
-        <v-list v-if="asset.notes && asset.notes.length > 0">
-          <v-list-item v-for="(note, index) in asset.notes" :key="note.id">
-            <v-list-item-content>
-              <v-list-item-title>{{ note.title }}</v-list-item-title>
-              <v-list-item-subtitle>{{ formatDate(note.created_at) }}</v-list-item-subtitle>
-            </v-list-item-content>
-  
-            <!-- Edit and Delete Buttons -->
-            <v-list-item-action>
-              <v-btn icon @click="editNote(note)" variant="secondary">
-                <v-icon>mdi-pencil</v-icon>
-              </v-btn>
-              <v-btn icon @click="deleteNote(note.id)" variant="secondary">
-                <v-icon color="red">mdi-delete</v-icon>
-              </v-btn>
-            </v-list-item-action>
-          </v-list-item>
-        </v-list>  
-        <!-- No notes message -->
-        <v-alert v-else type="info">No notes available.</v-alert>
+         <v-row>
+          <v-list v-if="asset.notes && asset.notes.length > 0">
+            <v-list-item v-for="(note, index) in asset.notes" :key="note.id">
+                <v-list-item-title>{{ note.title }}</v-list-item-title>
+                <v-list-item-subtitle>{{ formatDate(note.created_at) }}</v-list-item-subtitle>
+    
+              <!-- Edit and Delete Buttons -->
+              <v-list-item-action>
+                <v-btn icon @click="editNote(note)" variant="secondary">
+                  <v-icon>mdi-pencil</v-icon>
+                </v-btn>
+                <v-btn icon @click="deleteNote(note.id)" variant="secondary">
+                  <v-icon color="red">mdi-delete</v-icon>
+                </v-btn>
+              </v-list-item-action>
+            </v-list-item>
+          </v-list> 
+        </v-row> 
 
         <v-row>
             <v-col cols="8">
-                <h4>{{ this.editing ? 'Editing note' : 'Create New Note' }} </h4>
+                <h4>{{ this.editing ? 'Editing Note' : 'Create New Note' }} </h4>
                 <v-textarea
                 v-model="nNote.title"
                 label="New Note"
@@ -38,20 +38,20 @@
                 ></v-textarea>
             </v-col>
             <v-col cols="4" class="d-flex align-center justify-center gap-10">
-                <v-btn v-if="!this.editing" type="submit" color="primary" @click="createNote">Create</v-btn>
-                <v-btn v-if="this.editing" type="submit" color="primary" @click="cancelEdit">Cancel</v-btn>
-                <v-btn v-if="this.editing" type="submit" color="primary" @click="saveEditedNote">Done</v-btn>
+                <v-btn v-if="!this.editing" color="primary" @click="createNote">Create</v-btn>
+                <v-btn v-if="this.editing" color="primary" @click="cancelEdit">Cancel</v-btn>
+                <v-btn v-if="this.editing" color="primary" @click="saveEditedNote">Done</v-btn>
             </v-col>
         </v-row>
   
-    </v-col>
-    </v-row>
-  </template>
+      </v-col>
+  </v-container>
+</template>
   
-  <script>
-import apiClient from '@/plugins/axios';
-import store from '@/store';
-import { format } from 'date-fns';
+<script>
+  import apiClient from '@/plugins/axios';
+  import store from '@/store';
+  import { format } from 'date-fns';
 
   export default {
     data() {
@@ -132,9 +132,6 @@ import { format } from 'date-fns';
         },
     },
   };
-  </script>
+</script>
   
-  <style scoped>
-  /* Add any custom styling here if needed */
-  </style>
   

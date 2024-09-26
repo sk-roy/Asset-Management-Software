@@ -1,6 +1,7 @@
 import apiClient from '@/plugins/axios';
 import { createStore } from 'vuex'
 import Cookies from 'js-cookie';
+import methods from '@/components/methods';
 
 const store = createStore({
   state: {
@@ -80,7 +81,7 @@ const store = createStore({
         commit('SET_TOKEN', null);
         return response;
       } catch (error) {
-        this.handleError(error, 'Error while logging out');
+        methods.handleUnauthorizedError(error, 'Error while logging out');
       }
     },
 
@@ -90,18 +91,17 @@ const store = createStore({
           const assets = response.data.data;
           commit('SET_ASSETS', assets);  
         } catch (error) {
-          this.handleError(error, 'Error fetching assets');
+          methods.handleUnauthorizedError(error, 'Error fetching assets');
       }
     },
 
     async fetchAssetDetails({ commit }, { id }) {
       try {
           const response = await apiClient.get(`/assets/${id}`);
-          console.log('store fetchAssetDetails', id, response);
           const asset = response.data.data;
           commit('SET_ASSET_DETAILS', { id, asset });  
         } catch (error) {
-          this.handleError(error, 'Error fetching assets');
+          methods.handleUnauthorizedError(error, 'Error fetching assets');
       }
     },
 
@@ -111,17 +111,20 @@ const store = createStore({
         const events = response.data.data;
         commit('SET_EVENTS', events);   
       } catch (error) {
-        this.handleError(error, 'Error fetching events');
+        methods.handleUnauthorizedError(error, 'Error fetching events');
       } 
     },
 
     async fetchCategories({ commit }, { type }) {
       try {
+        console.log('fetchCategories');
         const response = await apiClient.get('/categories', { params: { type: type } });
         const categories = response.data.data;
         commit('SET_CATEGORIES', {type, categories}); 
+        console.log('fetchCategories done', categories);
       } catch (error) {
-        this.handleError(error, 'Error fetching categories');
+        console.log('fetchCategories error', error);
+        methods.handleUnauthorizedError(error, 'Error fetching categories');
       }   
     },
 
@@ -131,16 +134,8 @@ const store = createStore({
         const notes = response.data.data;
         commit('SET_CATEGORIES', {assetId, notes}); 
       } catch (error) {
-        this.handleError(error, 'Error fetching notes');
+        methods.handleUnauthorizedError(error, 'Error fetching notes');
       }   
-    },
-
-    handleError({error, errorMessage}) {
-      if (error.response && error.response.status === 401) {
-        Cookies.remove('auth_token', { path: '/' })
-      } else {
-          console.error(`${errorMessage}: `, error);
-      }
     },
   },
   getters: {

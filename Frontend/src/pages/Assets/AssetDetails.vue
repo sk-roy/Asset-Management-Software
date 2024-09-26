@@ -110,6 +110,7 @@
 
 
             <AssetNotes :assetProp="assetProp"/>
+            <AssetDocuments :pAsset="assetProp"/>
   
             </div>
 
@@ -128,6 +129,7 @@
 import methods from '@/components/methods';
 import store from '@/store';
 import AssetNotes from './AssetNotes.vue';
+import AssetDocuments from './AssetDocuments.vue';
 
   export default {
     props: {
@@ -140,6 +142,7 @@ import AssetNotes from './AssetNotes.vue';
 
     components: {
       AssetNotes,
+      AssetDocuments,
     },
 
     data() {
@@ -168,6 +171,7 @@ import AssetNotes from './AssetNotes.vue';
         const category = this.categories.find(c => c.id === id);
         return category ? category.name : 'Unknown';
       },
+      
       goBack() {
         this.closeDialog();
       },

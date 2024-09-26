@@ -1,4 +1,5 @@
 import apiClient from "@/plugins/axios";
+import Cookies from 'js-cookie';
 
 const methods = {
 
@@ -32,7 +33,16 @@ const methods = {
                 alert("Failed to deleting asset.");
             }
         }
-    }
+    },
+    
+    handleUnauthorizedError(error, errorMessage) {
+        console.log('handleUnauthorizedError Error', error, errorMessage);
+        if (error.response && error.status === 401) {
+            Cookies.remove('auth_token', { path: '/' })
+        } else {
+            console.error(`${errorMessage}: `, error);
+        }
+    },
 
 };
 

@@ -82,7 +82,6 @@ import store from '@/store';
 import AssetCard from '@/components/cards/AssetCard.vue';
 import AssetDetails from './Assets/AssetDetails.vue';
 import methods from '@/components/methods';
-import { mapActions } from 'vuex';
 
 export default {
   data () {
@@ -126,9 +125,13 @@ export default {
     },
 
     async openAssetDialog(item) {
-        await store.dispatch('fetchAssetDetails', { id: item.id });
-        this.selectedAsset = store.getters.getAssetDetails(item.id);
-        this.dialog = true;
+        try {
+            await store.dispatch('fetchAssetDetails', { id: item.id });
+            this.selectedAsset = store.getters.getAssetDetails(item.id);
+            this.dialog = true;
+        } catch (error) {
+            console.error('Asset data loading error.', error);
+        }
     },
 
     closeDialog() {

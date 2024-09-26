@@ -3,6 +3,7 @@
 use App\Http\Controllers\API\V1\AssetController;
 use App\Http\Controllers\API\V1\AuthController;
 use App\Http\Controllers\API\V1\CategoryController;
+use App\Http\Controllers\API\V1\DocumentController;
 use App\Http\Controllers\API\V1\EventController;
 use App\Http\Controllers\API\V1\NoteController;
 use Illuminate\Http\Request;
@@ -44,4 +45,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/notes', [NoteController::class, 'store']);
     Route::patch('/notes/{id}', [NoteController::class, 'update']);
     Route::delete('/notes/{id}', [NoteController::class, 'delete']);
+
+    
+
+    Route::get('/documents', [DocumentController::class, 'show']);
+    Route::post('/documents', [DocumentController::class, 'store']);
+    Route::get('/documents/{id}', [DocumentController::class, 'download']);
+    Route::delete('/documents/{id}', [DocumentController::class, 'delete']);
 });

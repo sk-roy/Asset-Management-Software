@@ -245,7 +245,7 @@ import { mapGetters, mapActions, mapState } from 'vuex';
 
       fetchAsset() {
         if (this.assetId != null) {
-          this.model = store.getters.getAsset(this.assetId);
+          this.model = store.getters.getAssetDetails(this.assetId);
         } else {
           this.resetModel();
         }
