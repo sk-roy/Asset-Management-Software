@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
-use App\Services\API\V1\AuthService;
+use App\Services\API\V1\IAuthService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Password;
@@ -13,7 +13,7 @@ class AuthController extends Controller
 {
     protected $authService;
 
-    public function __construct(AuthService $authService) 
+    public function __construct(IAuthService $authService) 
     {
         $this->authService = $authService;
     }

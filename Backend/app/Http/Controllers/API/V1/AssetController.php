@@ -4,7 +4,7 @@ namespace App\Http\Controllers\API\V1;
 
 use App\Models\Asset;
 use App\Http\Controllers\Controller;
-use App\Services\API\V1\AssetService;
+use App\Services\API\V1\IAssetService;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
@@ -13,7 +13,7 @@ class AssetController extends Controller
 {
     protected $assetService;
 
-    public function __construct(AssetService $assetService)
+    public function __construct(IAssetService $assetService)
     {
         $this->assetService = $assetService;
     }

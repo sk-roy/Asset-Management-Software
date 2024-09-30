@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
-use App\Services\API\V1\EventService;
+use App\Services\API\V1\IEventService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -11,7 +11,7 @@ class EventController extends Controller
 {
     protected $eventService;
 
-    public function __construct(EventService $eventService)
+    public function __construct(IEventService $eventService)
     {
         $this->eventService = $eventService;
     }

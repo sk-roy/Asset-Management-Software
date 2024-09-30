@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
-class AssetService
+class AssetService implements IAssetService
 {
     public function loadSortedAssetsForUser($userId, $sortKey = 'created_at', $sortOrder = 'asc')
     {

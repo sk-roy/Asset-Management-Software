@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
-class EventService
+class EventService implements IEventService
 {
     public function loadSortedEventsOfUser($userId, $sortKey = 'created_at', $sortOrder = 'asc')
     {

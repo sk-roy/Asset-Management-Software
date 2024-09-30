@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
-use App\Services\API\V1\NoteService;
+use App\Services\API\V1\INoteService;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
@@ -12,7 +12,7 @@ class NoteController extends Controller
 {
     protected $noteService;
 
-    public function __construct(NoteService $noteService)
+    public function __construct(INoteService $noteService)
     {
         $this->noteService = $noteService;
     }

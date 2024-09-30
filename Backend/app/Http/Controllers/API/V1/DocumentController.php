@@ -4,7 +4,7 @@ namespace App\Http\Controllers\API\V1;
 
 use App\Models\Document;
 use App\Http\Controllers\Controller;
-use App\Services\API\V1\DocumentService;
+use App\Services\API\V1\IDocumentService;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
@@ -13,7 +13,7 @@ class DocumentController extends Controller
 {
     protected $documentService;
 
-    public function __construct(DocumentService $documentService)
+    public function __construct(IDocumentService $documentService)
     {
         $this->documentService = $documentService;
     }

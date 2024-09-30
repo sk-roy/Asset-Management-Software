@@ -197,7 +197,7 @@ import AssetDocuments from './AssetDocuments.vue';
 
       async fetchNotes() {
         try {
-          await store.dispatch('fetchNotes', { type: this.assetProp.id });
+          await store.dispatch('fetchNotes', { assetId: this.assetProp.id });
           this.notes = store.getters.getNotes(this.assetProp.id);
         } catch (error) {
           console.error("Fetching notes failed", error);

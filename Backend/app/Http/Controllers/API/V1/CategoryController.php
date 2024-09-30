@@ -4,7 +4,7 @@ namespace App\Http\Controllers\API\V1;
 
 use App\Models\Category;
 use App\Http\Controllers\Controller;
-use App\Services\API\V1\CategoryService;
+use App\Services\API\V1\ICategoryService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -12,7 +12,7 @@ class CategoryController extends Controller
 {
     protected $categoryService;
 
-    public function __construct(CategoryService $categoryService)
+    public function __construct(ICategoryService $categoryService)
     {
         $this->categoryService = $categoryService;
     }

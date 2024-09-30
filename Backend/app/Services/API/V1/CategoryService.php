@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use \Illuminate\Database\Eloquent\ModelNotFoundException;
 
-class CategoryService
+class CategoryService implements ICategoryService
 {
     public function create(array $data, $userId, array $fields = []) 
     {    
