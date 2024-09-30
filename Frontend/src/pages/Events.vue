@@ -31,7 +31,6 @@ export default {
         try {
           await store.dispatch('fetchEvents', {type: 'All'});
           this.events = store.getters.getEvents('All');
-          console.log('events fetchEvents', this.events);
         } catch (error) {
           console.error("Fetching events failed", error);
         }
@@ -41,7 +40,6 @@ export default {
         try {
           await store.dispatch('fetchEvents', {type: this.selectedOption});
           this.events = store.getters.getEvents(this.selectedOption);
-          console.log('events filterEvents', this.events);
         } catch (error) {
           console.error("Fetching events failed", error);
         }
@@ -64,23 +62,25 @@ export default {
   <div>
     <v-card flat class="w-100 h-100 mb-4">
       <v-card-text>
-        <v-container fluid>
+        <v-container >
           <v-row align="center">
             <v-col cols="12" md="6">
               <h2 class="title text-h6 font-weight-medium">Events</h2>
             </v-col>
             <v-col cols="12" md="6">
-              <div class="d-flex justify-space-between gap-10" style="height: 10px;">
-                <v-select
-                  v-model="selectedOption"
-                  :items="options"
-                  variant="outlined"
-                  color="secondary"
-                  density="compact"
-                  persistent-hint
-                  single-line
-                  @change="filterEvents"
-                ></v-select>
+              <div class="d-flex justify-end gap-10">
+                <div style="width: 120px;">
+                  <v-select
+                    v-model="selectedOption"
+                    :items="options"
+                    variant="outlined"
+                    color="secondary"
+                    density="compact"
+                    persistent-hint
+                    single-line
+                    @change="filterEvents"
+                  ></v-select>
+                </div>
                 <v-btn variant="outlined" color="secondary" @click="clickCreateEvent">
                   Add new Event
                 </v-btn>

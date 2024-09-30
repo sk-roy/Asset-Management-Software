@@ -127,14 +127,12 @@ const store = createStore({
     },
 
     async fetchEvents({ commit }, { type }) {
-      console.log('store fetchEvents');
       try {
         var response = {};
         if (type == 'All') {
           response = await apiClient.get('/events');
         } else {
           response = await apiClient.get('/events', { params: { active: type == 'Live' ? 1 : 0 } });
-          console.log('store fetchEvents', response);
         }
         const events = response.data.data;
         commit('SET_EVENTS', { type, events });   

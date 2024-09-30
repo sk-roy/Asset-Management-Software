@@ -6,12 +6,9 @@ use App\Http\Controllers\API\V1\CategoryController;
 use App\Http\Controllers\API\V1\DocumentController;
 use App\Http\Controllers\API\V1\EventController;
 use App\Http\Controllers\API\V1\NoteController;
+use App\Http\Controllers\API\V1\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
 
 
 Route::post('/register', [AuthController::class, 'register']);
@@ -20,9 +17,12 @@ Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
 Route::get('/reset-password', [AuthController::class, 'resetPassword']);
 Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.reset');
 
-
-
 Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/user', [UserController::class, 'getUserInfo']);
+    Route::post('/user/update', [UserController::class, 'editUserInfo']);
+    Route::post('/user/change-password', [UserController::class, 'changePassword']);
+    Route::post('/user/logout', [UserController::class, 'logout']);
+
     Route::post('/logout', [AuthController::class, 'logout']);
     
     Route::get('/assets', [AssetController::class, 'index']);
