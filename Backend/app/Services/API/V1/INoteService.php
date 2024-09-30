@@ -2,7 +2,7 @@
 
 namespace App\Services\API\V1;
 
-interface NoteService
+interface INoteService
 {
     public function get($id);
     public function getAll();

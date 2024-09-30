@@ -9,7 +9,7 @@ const store = createStore({
     token: null,
     isAuthenticated: false,
     assets: [],
-    events: [],
+    events: {},
     categories: {},
     assetId: null,
     drawer: {
@@ -45,8 +45,8 @@ const store = createStore({
           state.assets.push(asset);
       }
     },
-    SET_EVENTS(state, events) {
-      state.events = events;
+    SET_EVENTS(state, { type, events }) {
+      state.events[type] = events;
     },
     SET_CATEGORIES(state, { type, categories }) {
       state.categories[type] = categories;
@@ -126,11 +126,18 @@ const store = createStore({
       }
     },
 
-    async fetchEvents({ commit }) {
+    async fetchEvents({ commit }, { type }) {
+      console.log('store fetchEvents');
       try {
-        const response = await apiClient.get('/events');
+        var response = {};
+        if (type == 'All') {
+          response = await apiClient.get('/events');
+        } else {
+          response = await apiClient.get('/events', { params: { active: type == 'Live' ? 1 : 0 } });
+          console.log('store fetchEvents', response);
+        }
         const events = response.data.data;
-        commit('SET_EVENTS', events);   
+        commit('SET_EVENTS', { type, events });   
       } catch (error) {
         methods.handleUnauthorizedError(error, 'Error fetching events');
       } 
@@ -172,8 +179,8 @@ const store = createStore({
     getAssetDetails: (state) => (id) =>  {
       return state.assets.find(asset => asset.id === id);
     },
-    getEvents(state) {
-      return state.events;
+    getEvents: (state) => (type) => {
+      return state.events[type] || [];
     },
     getCategories: (state)  => (type) => {
       return state.categories[type] || [];

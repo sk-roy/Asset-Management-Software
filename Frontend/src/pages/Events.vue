@@ -7,6 +7,8 @@ export default {
     data() {
         return {
           events: {},
+          selectedOption: "All",
+          options: ["All", "Live", "Dead"], 
         }
     },
 
@@ -18,11 +20,28 @@ export default {
       this.fetchEvents()
     },
 
+    watch: {
+      selectedOption() {
+        this.filterEvents();
+      }
+    },
+
     methods: {  
       async fetchEvents() {
         try {
-          await store.dispatch('fetchEvents');
-          this.events = store.getters.getEvents;
+          await store.dispatch('fetchEvents', {type: 'All'});
+          this.events = store.getters.getEvents('All');
+          console.log('events fetchEvents', this.events);
+        } catch (error) {
+          console.error("Fetching events failed", error);
+        }
+      },
+      
+      async filterEvents() {
+        try {
+          await store.dispatch('fetchEvents', {type: this.selectedOption});
+          this.events = store.getters.getEvents(this.selectedOption);
+          console.log('events filterEvents', this.events);
         } catch (error) {
           console.error("Fetching events failed", error);
         }
@@ -45,17 +64,31 @@ export default {
   <div>
     <v-card flat class="w-100 h-100 mb-4">
       <v-card-text>
-        <div class="d-flex align-center">
-          <div>
-            <h2 class="title text-h6 font-weight-medium">Events</h2>
-          </div>
-          <v-spacer></v-spacer>
-          <div>
-              <v-btn variant="outlined" color="secondary" @click="clickCreateEvent">
+        <v-container fluid>
+          <v-row align="center">
+            <v-col cols="12" md="6">
+              <h2 class="title text-h6 font-weight-medium">Events</h2>
+            </v-col>
+            <v-col cols="12" md="6">
+              <div class="d-flex justify-space-between gap-10" style="height: 10px;">
+                <v-select
+                  v-model="selectedOption"
+                  :items="options"
+                  variant="outlined"
+                  color="secondary"
+                  density="compact"
+                  persistent-hint
+                  single-line
+                  @change="filterEvents"
+                ></v-select>
+                <v-btn variant="outlined" color="secondary" @click="clickCreateEvent">
                   Add new Event
-              </v-btn>
-          </div>
-        </div>
+                </v-btn>
+              </div>
+            </v-col>
+          </v-row>
+        </v-container>
+
         <v-table class="month-table mt-7 hidden-sm-and-down">
           <template v-slot:default>
             <thead>

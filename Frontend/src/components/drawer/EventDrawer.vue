@@ -12,7 +12,7 @@
             <v-col cols="auto">
               <v-list>
                 <v-list-item>
-                  <v-list-item-title> {{ eventId == null ? 'New Event' : 'Editing Event' }} </v-list-item-title>
+                  <v-list-item-title> {{ eventDrawerEventId == null ? 'New Event' : 'Editing Event' }} </v-list-item-title>
                 </v-list-item>
               </v-list>
             </v-col>
@@ -144,8 +144,8 @@
 
               <div class="d-flex justify-center gap-20 px-8">
                 <v-btn @click="closeDrawer" variant="outlined" color="secondary">Cancel</v-btn>
-                <v-btn @click="updateEvent" v-if="eventId != null" variant="outlined" color="success">Update</v-btn>
-                <v-btn @click="createEvent" v-if="eventId == null" variant="outlined" color="success">Submit</v-btn>
+                <v-btn @click="updateEvent" v-if="eventDrawerEventId != null" variant="outlined" color="success">Update</v-btn>
+                <v-btn @click="createEvent" v-if="eventDrawerEventId == null" variant="outlined" color="success">Submit</v-btn>
               </div>
 
           </v-card>
@@ -172,7 +172,7 @@ import { mapGetters, mapActions, mapState } from 'vuex';
           datetime: '',
           description: '',
           charge: '',
-          active_mode: false,
+          active_mode: true,
           map_location: '',
           asset_id: null,
           category_id: null,
@@ -196,7 +196,7 @@ import { mapGetters, mapActions, mapState } from 'vuex';
     },
    
     watch: {
-      eventDrawerIsOpen(roy) {
+      eventDrawerIsOpen() {
         this.fetchEvent();
         this.fetchCategories();
         this.fetchAssets();
@@ -262,7 +262,7 @@ import { mapGetters, mapActions, mapState } from 'vuex';
 
       async updateEvent() {          
         try {
-          await apiClient.patch(`/events/${this.eventId}`, this.model);
+          await apiClient.patch(`/events/${this.eventDrawerEventId}`, this.model);
           window.location.reload();
         } catch (error) {
           console.error("Failed to updating new event:", error);
@@ -274,9 +274,13 @@ import { mapGetters, mapActions, mapState } from 'vuex';
         this.model.category_id = value;
       },
 
+      onAssetChange(value) {
+        this.model.asset_id = value;
+      },
+
       fetchEvent() {
-        if (this.eventId != null) {
-          this.model = store.getters.getEventDetails(this.eventId);
+        if (this.eventDrawerEventId != null) {
+          this.model = store.getters.getEventDetails(this.eventDrawerEventId);
         } else {
           this.resetModel();
         }
@@ -284,24 +288,26 @@ import { mapGetters, mapActions, mapState } from 'vuex';
 
       resetModel() {
         this.model = {
-          title: "",
-          description: "",
-          category_id: 6,
-          address: "",
-          flat_number: "",
-          floor_number: "",
-          area: "",
-          purchase_price: "",
-          purchase_date: "",
-          diagram_path: "",
-          latitude: "",
-          longitude: "",
-          brand: "",
-          model: "",
-          capacity: "",
-          specification: "",
-          plate_number: "",
-          weight: "",
+          title: '',
+          datetime: '',
+          description: '',
+          charge: '',
+          active_mode: true,
+          map_location: '',
+          asset_id: null,
+          category_id: null,
+          service_provider: '',
+          service_details: '',
+          cleaning_service: '',
+          cleaning_charge: '',
+          replacement_item: '',
+          replacement_cost: '',
+          visitor_name: '',
+          visit_purpose: '',
+          bill_provider: '',
+          bill_amount: '',
+
+          repeatDays: null,
         };
       },
     },

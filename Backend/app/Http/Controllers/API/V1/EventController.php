@@ -29,7 +29,12 @@ class EventController extends Controller
             $sortKey = $request->input('sort_key', 'created_at');
             $sortOrder = $request->input('sort_order', 'asc');
 
-            $events = $this->eventService->loadSortedEventsOfUser($userId, $sortKey, $sortOrder);
+            if ($request->has('active')) {
+                $isActive = $request->input('active');
+                $events = $this->eventService->getLiveDeadEvents($isActive);
+            } else {
+                $events = $this->eventService->loadSortedEventsOfUser($userId, $sortKey, $sortOrder);
+            }
             
             $response['success'] = true;
             $response['data'] = $events;
@@ -110,7 +115,7 @@ class EventController extends Controller
         ];
 
         try {
-            $data = $this->getAssetData($request);
+            $data = $this->getEventData($request);
             $event = $this->eventService->create($data, $request->input('asset_id'), $request->input('category_id'));
             
             $response['success'] = true;

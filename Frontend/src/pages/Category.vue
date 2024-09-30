@@ -1,7 +1,7 @@
 <script>
 import CategoryCard from "@/components/cards/CategoryCard.vue";
 import store from "@/store";
-import CreateCategoryDrawer from "@/components/drawer/CreateCategoryDrawer.vue";
+import CategoryDrawer from "@/components/drawer/CategoryDrawer.vue";
 
 export default {
     data() {
@@ -14,7 +14,7 @@ export default {
 
     components() {
       CategoryCard,
-      CreateCategoryDrawer
+      CategoryDrawer
     },
       
     mounted() {
@@ -99,7 +99,7 @@ export default {
       </v-card-text>
     </v-card>
     
-    <CreateCategoryDrawer :isOpen="openDrawer" @update:isOpen="openDrawer = $event" />
+    <CategoryDrawer :isOpen="openDrawer" @update:isOpen="openDrawer = $event" />
     
     <v-col class="hidden-md-and-up">
       <v-row cols="12" v-for="category in categories" :key="category.id">

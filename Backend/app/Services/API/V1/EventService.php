@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Log;
 
 class EventService implements IEventService
 {
-    public function loadSortedEventsOfUser($userId, $sortKey = 'created_at', $sortOrder = 'asc')
+    public function loadSortedEventsOfUser($userId, $sortKey = 'created_at', $sortOrder = 'asc', $active = 'All')
     {
         try {
             $validSortOrder = ['asc', 'desc'];
@@ -20,8 +20,7 @@ class EventService implements IEventService
                 $sortOrder = 'asc'; 
             }
 
-            $user = User::findOrFail($userId);
-            $events = $user->events()->orderBy($sortKey, $sortOrder)->get();
+            $events = auth()->user()->events()->orderBy($sortKey, $sortOrder)->get();
 
             return $events;
         } catch (\Exception $e) {
@@ -29,6 +28,7 @@ class EventService implements IEventService
             throw new \Exception('Events loading failed.');
         }
     }
+    
     public function loadSortedEventsOfAsset($assetId, $sortKey = 'created_at', $sortOrder = 'asc')
     {
         try {
@@ -46,6 +46,20 @@ class EventService implements IEventService
             throw new \Exception('Events loading failed.');
         }
     } 
+    
+    public function getLiveDeadEvents($isActive)
+    {
+        Log::info('Method [EventService.getLiveDeadEvents] Start.', ['isActive' => $isActive]);
+        try {
+            $events = auth()->user()->events()->where('active_mode', $isActive)->get();
+
+            return $events;
+        } catch (\Exception $e) {
+            Log::error('Events loading failed:', ['error' => $e->getMessage()]);
+            throw new \Exception('Events loading failed.');
+        }
+        Log::info('Method [EventService.getLiveDeadEvents] Start.', ['events' => $events]);
+    }
 
     public function get($id)
     {
