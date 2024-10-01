@@ -3,13 +3,22 @@ import store from '@/store';
 import Cookies from 'js-cookie';
 import { ref } from "vue";
 import { profile } from "./data";
+import Profile from '@/pages/Profile/Profile.vue';
+import ChangePassword from '@/pages/Profile/ChangePassword.vue';
 
 
 export default {
   data() {
     return {
       userprofile: ref(profile),
+      profileDialog: false,
+      changePasswordDialog: false,
     }
+  },
+
+  components: {
+    Profile,
+    ChangePassword,
   },
 
   methods: {    
@@ -26,6 +35,24 @@ export default {
         console.error("Logout failed", error);
       }
     },
+
+    onClickItem(item) {
+      console.log('onClickItem', item);
+      if (item.title == "My Profile") {
+        this.profileDialog = true;  
+      } else if (item.title == "Password Change") {
+        this.changePasswordDialog = true;
+      }
+    }, 
+
+    closeProfileDialog() {
+      this.profileDialog = false;
+    },
+
+    closeChangePasswordDialog() {
+      console.log('closeChangePasswordDialog');
+      this.changePasswordDialog = false;
+    }
   }
 }
 </script>
@@ -61,13 +88,23 @@ export default {
           :title="item.title"
           :subtitle="item.desc"
           rounded="lg"
+          @click="onClickItem(item)"
         >
          
         </v-list-item>
-          <v-btn block color="secondary" variant="contained" class="mt-4 py-4" @click="logout"
-          >Logout</v-btn
+
+        <v-btn block color="secondary" variant="contained" class="mt-4 py-4" @click="logout"
+        >Logout</v-btn
         >
       </v-list>
     </v-menu>
+    
+    <v-dialog v-model="profileDialog" max-width="700">
+        <Profile :closeProfileDialog="closeProfileDialog"/>
+    </v-dialog>
+
+    <v-dialog v-model="changePasswordDialog" max-width="700">
+        <ChangePassword :closeChangePasswordDialog="closeChangePasswordDialog"/>
+    </v-dialog>
   </div>
 </template>

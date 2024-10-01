@@ -160,6 +160,16 @@ const store = createStore({
         methods.handleUnauthorizedError(error, 'Error fetching notes');
       }   
     },
+
+    async fetchUser({ commit }) {
+      try {
+        const response = await apiClient.get('/user');
+        const user = response.data.data;
+        commit('SET_USER', user); 
+      } catch (error) {
+        methods.handleUnauthorizedError(error, 'Error fetching user');
+      }   
+    },
   },
   getters: {
     isAuthenticated(state) {

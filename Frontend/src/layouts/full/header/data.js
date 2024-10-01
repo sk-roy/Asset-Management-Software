@@ -8,8 +8,8 @@ const profile = [
     desc: "Messages & Emails",
   },
   {
-    title: "My Tasks",
-    desc: "To-do and Daily Tasks",
+    title: "Password Change",
+    desc: "Setup a new password",
   },
 ];
 
