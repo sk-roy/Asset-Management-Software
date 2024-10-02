@@ -1,4 +1,12 @@
 <template>
+  <div>
+  <v-col>
+    
+  <v-row>    
+    <v-col cols="12" sm="12">
+      <EventChart />
+    </v-col>
+  </v-row>
   <v-row class="hidden-sm-and-down">
     <v-col cols="12" md="9">
       <v-card flat class="w-100 h-100 hidden-sm-and-down">
@@ -29,6 +37,7 @@
       </v-row>
     </v-col>
   </v-row>
+</v-col>
 
   <div class="hidden-md-and-up ">
     
@@ -50,6 +59,7 @@
       </v-slide-group-item>
     </v-slide-group>
   </div>
+</div>
 </template>
 
 
@@ -58,6 +68,7 @@ import store from '@/store';
 import AssetCard from '@/components/cards/AssetCard.vue';
 import EventCard from '@/components/cards/EventCard.vue';
 import methods from '@/components/methods';
+import EventChart from './dashboardComponents/event-overview/EventChart.vue';
 
 export default {
 data () {
@@ -79,7 +90,8 @@ data () {
 
 components: {
   AssetCard,
-  EventCard
+  EventCard,
+  EventChart
 },
 
 mounted() {

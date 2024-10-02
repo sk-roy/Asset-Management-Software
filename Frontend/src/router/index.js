@@ -4,7 +4,7 @@ import Cookies from 'js-cookie';
 
 import Login from '@/pages/auth/Login.vue';
 import Register from '@/pages/auth/Register.vue';
-import Dashboard from '@/pages/Dashboard.vue';
+import Dashboard from '@/pages/dashboard/Dashboard.vue';
 import ForgotPassword from '@/pages/auth/Forgot-Password.vue';
 import Layout from '@/layouts/full/Layout.vue';
 import Category from '@/pages/Category.vue';
