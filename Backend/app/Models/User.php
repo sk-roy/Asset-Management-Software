@@ -3,6 +3,10 @@
 namespace App\Models;
 
 use App\Models\Asset;
+use App\Models\Category;
+use App\Models\Document;
+use App\Models\Note;
+use App\Models\User;
 use Laravel\Sanctum\HasAPITokens;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -51,5 +55,29 @@ class User extends Authenticatable
     public function assets()
     {
         return $this->hasMany(Asset::class);
+    }
+    
+
+    public function events()
+    {
+        return $this->hasMany(Event::class);
+    }
+    
+
+    public function notes()
+    {
+        return $this->hasMany(Note::class);
+    }
+    
+
+    public function documents()
+    {
+        return $this->hasMany(Document::class);
+    }
+    
+
+    public function categories()
+    {
+        return $this->hasMany(Category::class);
     }
 }

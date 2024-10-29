@@ -72,7 +72,8 @@
 
 
 <script>
-import apiClient from '../../plugins/axios.js'
+import store from '@/store/index.js';
+import Cookies from 'js-cookie';
 
 export default {
 
@@ -87,21 +88,16 @@ export default {
   methods: {
     async login() {
       try {
-        const response = await apiClient.post('/login', {
+        const response = await store.dispatch('login', {
           email: this.email,
           password: this.password
         })
 
-        console.log(response);
-
-        // Store the token in a cookie
         const token = response.data.token;
-        document.cookie = `auth_token=${token}; path=/; max-age=${
-          24 * 60 * 60
-        }`; // 1 day
+        Cookies.set('auth_token', token, { expires: 1, path: '/' }); // 1 day expiry
 
-        // Redirect to the profile page
-        this.$router.push("/");
+         window.location.reload();
+        this.$router.push({ name: 'dashboard' });
       } catch (error) {
         console.error("Login failed", error);
         alert("Login failed. Please check your credentials.");
@@ -109,11 +105,11 @@ export default {
     },
 
     gotToForgotPassword() {
-      this.$router.push('/auth/forgot-password')
+      this.$router.push('/forgot-password')
     },
 
     goToRegister() {
-      this.$router.push('/auth/register')
+      this.$router.push('/register')
     },
   },
 }

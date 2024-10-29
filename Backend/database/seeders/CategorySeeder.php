@@ -7,6 +7,7 @@ use App\Models\Field;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Faker\Factory as Faker;
 
 class CategorySeeder extends Seeder
 {
@@ -15,16 +16,18 @@ class CategorySeeder extends Seeder
      */
     public function run(): void
     {
-        Category::create(['name' => 'Land/Flat', 'title' => 'Land or Flat', 'type' => 'Asset']);
-        Category::create(['name' => 'Electronic Device', 'title' => 'Electronic Device', 'type' => 'Asset']);
-        Category::create(['name' => 'Furniture', 'title' => 'Furniture','type' => 'Asset']);
-        Category::create(['name' => 'Vehicle', 'title' => 'Vehicle', 'type' => 'Asset']);
-        Category::create(['name' => 'Jewelry', 'title' => 'Jewelry', 'type' => 'Asset']);
+        $faker = Faker::create();
+
+        Category::create(['name' => 'Land/Flat', 'title' => 'Land or Flat', 'description' => $faker->sentence, 'type' => 'Asset']);
+        Category::create(['name' => 'Electronic Device', 'title' => 'Electronic Device', 'description' => $faker->sentence, 'type' => 'Asset']);
+        Category::create(['name' => 'Furniture', 'title' => 'Furniture', 'description' => $faker->sentence,'type' => 'Asset']);
+        Category::create(['name' => 'Vehicle', 'title' => 'Vehicle', 'description' => $faker->sentence, 'type' => 'Asset']);
+        Category::create(['name' => 'Jewelry', 'title' => 'Jewelry', 'description' => $faker->sentence, 'type' => 'Asset']);
         
-        Category::create(['name' => 'Service', 'title' => 'Service', 'type' => 'Event']);
-        Category::create(['name' => 'Clean', 'title' => 'Clean', 'type' => 'Event']);
-        Category::create(['name' => 'Replace', 'title' => 'Replace', 'type' => 'Event']);
-        Category::create(['name' => 'Visit', 'title' => 'Visit', 'type' => 'Event']);
-        Category::create(['name' => 'Bill Payment', 'title' => 'Bill Payment', 'type' => 'Event']);
+        Category::create(['name' => 'Service', 'title' => 'Service', 'description' => $faker->sentence, 'type' => 'Event']);
+        Category::create(['name' => 'Clean', 'title' => 'Clean', 'description' => $faker->sentence, 'type' => 'Event']);
+        Category::create(['name' => 'Replace', 'title' => 'Replace', 'description' => $faker->sentence, 'type' => 'Event']);
+        Category::create(['name' => 'Visit', 'title' => 'Visit', 'description' => $faker->sentence, 'type' => 'Event']);
+        Category::create(['name' => 'Bill Payment', 'title' => 'Bill Payment', 'description' => $faker->sentence, 'type' => 'Event']);
     }
 }

@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
-class AuthService
+class AuthService implements IAuthService
 {
 
     public function register(array $data)

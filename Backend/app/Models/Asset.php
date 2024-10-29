@@ -9,13 +9,15 @@ use App\Models\Note;
 use App\Models\Document;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Asset extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'title',
+        'description',
         'address',
         'flat_number',
         'floor_number',

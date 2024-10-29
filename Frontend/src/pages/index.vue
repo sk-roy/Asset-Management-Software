@@ -1,7 +1,0 @@
-<template>
-  <div>Hello Users!</div>
-</template>
-
-<script setup>
-  //
-</script>
