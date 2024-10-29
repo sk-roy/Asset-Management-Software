@@ -24,6 +24,7 @@ class AssetSeeder extends Seeder
         for ($i = 0; $i < 2; $i++) {
             $asset = Asset::create([
                 'title' => $faker->word . ' Mobile ' . $i,
+                'description' => $faker->paragraph,
                 'purchase_price' => $faker->randomFloat(2, 100, 1000),
                 'purchase_date' => $faker->date,
                 'brand' => $faker->word,
@@ -44,6 +45,7 @@ class AssetSeeder extends Seeder
         for ($i = 0; $i < 3; $i++) {
             $asset = Asset::create([
                 'title' => $faker->word . ' Car ' . $i,
+                'description' => $faker->paragraph,
                 'purchase_price' => $faker->randomFloat(2, 5000, 30000),
                 'purchase_date' => $faker->date,
                 'brand' => $faker->word,

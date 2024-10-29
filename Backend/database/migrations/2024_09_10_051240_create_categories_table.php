@@ -15,7 +15,12 @@ return new class extends Migration
             $table->id();
             $table->string('name')->unique();
             $table->string('title')->nullable();
+            $table->text('description')->nullable();
             $table->enum('type', ['Asset', 'Event']);
+            
+            $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
+            $table->softDeletes();
+            
             $table->timestamps();
         });
     }

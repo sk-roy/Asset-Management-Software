@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('assets', function (Blueprint $table) {
             $table->id();
-            $table->string('title')->unique()->nullable();
+            $table->string('title')->nullable();
+            $table->text('description')->nullable();
             $table->string('address')->nullable();
             $table->string('flat_number')->nullable();
             $table->string('floor_number')->nullable();
@@ -32,6 +33,7 @@ return new class extends Migration
 
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('category_id')->nullable()->constrained('categories')->onDelete('cascade');
+            $table->softDeletes();
 
             $table->timestamps();
         });
